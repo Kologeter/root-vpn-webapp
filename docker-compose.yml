@@ -1,0 +1,19 @@
+#networks:
+#  anastasi_nails_default:
+#    external: True
+
+services:
+#  backend:
+#    build:
+#      context: ./backend
+#    networks:
+#      - dev
+
+  frontend:
+    build:
+      context: ./frontend
+    restart: always
+    ports:
+      - '3000:3000'
+#    networks:
+#      - anastasi_nails_default

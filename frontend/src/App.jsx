@@ -71,7 +71,7 @@ function App() {
                     Send User Data
                 </button>
                 <button onClick={() => getLinkRedirect('https://test.root-vpn.ru/connect/run')}>
-                    Redirect Link
+                    Подключиться
                 </button>
             </header>
         </div>

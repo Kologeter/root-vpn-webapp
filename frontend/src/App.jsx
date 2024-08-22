@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
 
@@ -6,11 +6,8 @@ function App() {
 
     useEffect(() => {
         // Инициализация Telegram WebApp
-        // const telegram = window.Telegram.WebApp;
-
         const tg = window.Telegram.WebApp;
 
-        tg.MainButton.text = "Подключиться";
         tg.MainButton.setText("Подключиться");
         tg.MainButton.show();
 
@@ -25,27 +22,19 @@ function App() {
 
     const getLinkRedirect = (url) => {
         const telegram = window.Telegram.WebApp;
-
         const user = telegram.initDataUnsafe?.user;
 
-        // Подготовка hex_id
-        const hex_id = user && user.id ? "0x" + user.id.toString(16) : null;
-
-        if (!hex_id) {
-            console.error('Hex ID is not available.');
+        if (!user || !user.id) {
+            console.error('User or user ID is not available.');
             return;
         }
 
+        // Подготовка hex_id
+        const hex_id = "0x" + user.id.toString(16);
+
         const url_get = `${url}${hex_id}`;
 
-        console.log('Платформа: ',telegram.platform);
-
-        // axios.get(url_get).then((response) => {
-        //     console.log('Ответ от аксиоса', response);
-        //     telegram.openLink(response)
-        // });
-
-        // telegram.openLink(url_get);
+        console.log('Платформа: ', telegram.platform);
 
         axios.get(url_get)
             .then((response) => {
@@ -53,8 +42,7 @@ function App() {
                 console.log('redirectUrl', redirectUrl);
                 if (redirectUrl) {
                     // Выполняем редирект на полученную ссылку
-                    telegram.openLink(redirectUrl)
-                    // window.open(redirectUrl, '_blank');
+                    telegram.openLink(redirectUrl);
                 } else {
                     console.error('Redirect URL is not available.');
                 }
@@ -74,13 +62,6 @@ function App() {
             telegram.sendData("User data is not available.");
         }
     };
-    //
-    // const downloadApp = () => {
-    //     const telegram = window.Telegram.WebApp;
-    //     if (telegram.platform) {
-    //
-    //     }
-    // }
 
     return (
         <div className="App">

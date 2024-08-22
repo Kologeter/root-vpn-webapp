@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react'
 import axios from 'axios';
 import './App.css';
 
@@ -24,6 +24,8 @@ function App() {
         }
 
         const url_get = `${url}${hex_id}`;
+
+        console.log('Ссылка получена: ', url_get)
 
         axios.get(url_get)
             .then((response) => {

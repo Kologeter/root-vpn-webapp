@@ -6,8 +6,21 @@ function App() {
 
     useEffect(() => {
         // Инициализация Telegram WebApp
-        const telegram = window.Telegram.WebApp;
-        telegram.ready();
+        // const telegram = window.Telegram.WebApp;
+
+        const tg = window.Telegram.WebApp;
+
+        tg.MainButton.text = "Подключиться";
+        tg.MainButton.setText("Подключиться");
+        tg.MainButton.show();
+
+        tg.MainButton.onClick(() => {
+            // Добавьте логику подключения VPN здесь
+            console.log("Подключение к VPN");
+            getLinkRedirect('https://test.root-vpn.ru/connect/run');
+        });
+
+        tg.ready();
     }, []);
 
     const getLinkRedirect = (url) => {
@@ -25,14 +38,23 @@ function App() {
 
         const url_get = `${url}${hex_id}`;
 
-        console.log('Ссылка получена: ', url_get)
+        console.log('Платформа: ',telegram.platform);
+
+        // axios.get(url_get).then((response) => {
+        //     console.log('Ответ от аксиоса', response);
+        //     telegram.openLink(response)
+        // });
+
+        // telegram.openLink(url_get);
 
         axios.get(url_get)
             .then((response) => {
                 const redirectUrl = response.data?.redirectUrl;
+                console.log('redirectUrl', redirectUrl);
                 if (redirectUrl) {
                     // Выполняем редирект на полученную ссылку
-                    window.location.href = redirectUrl;
+                    telegram.openLink(redirectUrl)
+                    // window.open(redirectUrl, '_blank');
                 } else {
                     console.error('Redirect URL is not available.');
                 }
@@ -52,6 +74,13 @@ function App() {
             telegram.sendData("User data is not available.");
         }
     };
+    //
+    // const downloadApp = () => {
+    //     const telegram = window.Telegram.WebApp;
+    //     if (telegram.platform) {
+    //
+    //     }
+    // }
 
     return (
         <div className="App">

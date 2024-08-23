@@ -23,12 +23,12 @@ function App() {
     const download_app = () => {
         const tg = window.Telegram.WebApp;
 
-        tg.showAlert('Ваша платформа ' + tg.platform);
+        // tg.showAlert('Ваша платформа ' + tg.platform);
 
         switch (tg.platform) {
             case 'ios':
-                console.log('Плафторма: ios');
-                tg.openlink('https://apps.apple.com/us/app/outline-app/id1356177741');
+                // console.log('Плафторма: ios');
+                tg.openLink('https://apps.apple.com/us/app/outline-app/id1356177741');
                 return;
             case 'android':
                 // console.log('Платформа: android');

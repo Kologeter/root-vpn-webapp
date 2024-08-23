@@ -112,6 +112,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <h1>Привет, {userName}!</h1>
+                <img src="../src/assets/AnimatedSticker.tgs" alt="AnimatedSticker" className="sticker"/>
                 <button onClick={sendUserData}>
                     Send User Data
                 </button>
@@ -120,7 +121,7 @@ function App() {
                 </button>
             </header>
             <main className="App">
-                <button onClick={() =>  download_app()}>
+                <button onClick={() => download_app()}>
                     Скачать приложение
                 </button>
             </main>

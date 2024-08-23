@@ -39,3 +39,9 @@ button {
 button:hover {
   opacity: 0.8;
 }
+
+.sticker {
+  width: 150px; /* Задайте ширину стикера */
+  height: auto; /* Автоматическая высота */
+  margin-top: 20px; /* Отступ сверху от приветствия */
+}

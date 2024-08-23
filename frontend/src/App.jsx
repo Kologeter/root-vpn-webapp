@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import { Player } from '@lottiefiles/react-lottie-player';
-import duckAnimation from './assets/AnimatedSticker';
+import duckAnimation from './assets/AnimatedSticker.json';
 import axios from 'axios';
 import './App.css';
 

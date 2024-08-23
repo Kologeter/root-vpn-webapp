@@ -1,4 +1,6 @@
 import {useEffect, useState} from 'react';
+import { Player } from '@lottiefiles/react-lottie-player';
+import duckAnimation from '/assets/AnimatedSticker';
 import axios from 'axios';
 import './App.css';
 
@@ -112,7 +114,13 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <h1>Привет, {userName}!</h1>
-                <img src="assets/AnimatedSticker.tgs" alt="AnimatedSticker" className="sticker"/>
+                {/*<img src="assets/AnimatedSticker.tgs" alt="AnimatedSticker" className="sticker"/>*/}
+                <Player
+                    autoplay
+                    loop
+                    src={duckAnimation}
+                    style={{ height: '150px', width: '150px', marginTop: '20px' }}
+                />
                 <button onClick={sendUserData}>
                     Send User Data
                 </button>

@@ -30,22 +30,22 @@ function App() {
                 return;
             case 'android':
                 console.log('Платформа: android');
-                tg.openlink('https://play.google.com/store/apps/details?id=org.outline.android.client');
+                tg.openLink('https://play.google.com/store/apps/details?id=org.outline.android.client');
                 return;
             case 'web':
                 console.log('Платформа: web');
-                tg.openlink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
+                tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
             case 'macos':
                 console.log("Платформа: macos");
-                tg.openlink('https://itunes.apple.com/us/app/outline-app/id1356178125');
+                tg.openLink('https://itunes.apple.com/us/app/outline-app/id1356178125');
                 return;
             case 'tdesktop':
-                tg.openlink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
+                tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
             default:
                 console.log('Дефолт устройство');
-                tg.openlink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
+                tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
         }
 
@@ -109,7 +109,9 @@ function App() {
                 </button>
             </header>
             <main className="App">
-                <button onClick={() =>  download_app()}></button>
+                <button onClick={() =>  download_app()}>
+                    Скачать приложение
+                </button>
             </main>
         </div>
     );

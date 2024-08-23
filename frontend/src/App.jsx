@@ -112,7 +112,7 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <h1>Привет, {userName}!</h1>
-                <img src="../src/assets/AnimatedSticker.tgs" alt="AnimatedSticker" className="sticker"/>
+                <img src="assets/AnimatedSticker.tgs" alt="AnimatedSticker" className="sticker"/>
                 <button onClick={sendUserData}>
                     Send User Data
                 </button>

@@ -23,6 +23,8 @@ function App() {
     const download_app = () => {
         const tg = window.Telegram.WebApp
 
+        tg.showAlert('Ваша платформа ', tg.platform)
+
         switch (tg.platform) {
             case 'ios':
                 console.log('Плафторма: ios');

@@ -6,6 +6,7 @@
   height: 100vh;
   padding: 0 20px; /* Отступы от краев экрана */
   box-sizing: border-box; /* Учитывать отступы в ширине */
+  width: 100%;
 }
 
 .App-header {

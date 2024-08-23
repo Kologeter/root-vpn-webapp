@@ -1,12 +1,21 @@
-import { useEffect } from 'react';
+import {useEffect, useState} from 'react';
 import axios from 'axios';
 import './App.css';
 
 function App() {
 
+    const [userName, setUserName] = useState(''); // Состояние для хранения имени пользователя
+
     useEffect(() => {
         // Инициализация Telegram WebApp
         const tg = window.Telegram.WebApp;
+
+        const user = tg.initDataUnsafe?.user;
+
+        // Установка имени пользователя
+        if (user) {
+            setUserName(user.first_name);
+        }
 
         tg.MainButton.setText("Подключиться");
         tg.MainButton.show();
@@ -102,7 +111,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <h1>Telegram WebApp</h1>
+                <h1>Привет, {userName}!</h1>
                 <button onClick={sendUserData}>
                     Send User Data
                 </button>

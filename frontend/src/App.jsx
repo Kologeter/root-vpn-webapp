@@ -21,9 +21,9 @@ function App() {
     }, []);
 
     const download_app = () => {
-        const tg = window.Telegram.WebApp
+        const tg = window.Telegram.WebApp;
 
-        tg.showAlert('Ваша платформа ' + tg.platform)
+        tg.showAlert('Ваша платформа ' + tg.platform);
 
         switch (tg.platform) {
             case 'ios':
@@ -31,22 +31,22 @@ function App() {
                 tg.openlink('https://apps.apple.com/us/app/outline-app/id1356177741');
                 return;
             case 'android':
-                console.log('Платформа: android');
+                // console.log('Платформа: android');
                 tg.openLink('https://play.google.com/store/apps/details?id=org.outline.android.client');
                 return;
             case 'web':
-                console.log('Платформа: web');
+                // console.log('Платформа: web');
                 tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
             case 'macos':
-                console.log("Платформа: macos");
+                // console.log("Платформа: macos");
                 tg.openLink('https://itunes.apple.com/us/app/outline-app/id1356178125');
                 return;
             case 'tdesktop':
                 tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
             default:
-                console.log('Дефолт устройство');
+                // console.log('Дефолт устройство');
                 tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
         }

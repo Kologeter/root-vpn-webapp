@@ -20,7 +20,7 @@ function App() {
             setUserName(user.first_name);
         }
 
-        axios.post('https://test.root-vpn.ru/check/subscription', {'user_id': user.id})
+        axios.post('https://test.root-vpn.ru/check/subscription', {'user_id': user.id.toString()})
             .then((response) => {
                 const { status, subscription } = response.data;
                 if (status === 'success') {

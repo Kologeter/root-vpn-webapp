@@ -119,16 +119,16 @@ function App() {
                     autoplay
                     loop
                     src={duckAnimation}
-                    style={{ height: '150px', width: '150px', marginTop: '20px' }}
+                    style={{ height: '150px', width: '150px', marginTop: '10px' }}
                 />
-                <button onClick={sendUserData}>
-                    Send User Data
-                </button>
+                {/*<button onClick={sendUserData}>*/}
+                {/*    Send User Data*/}
+                {/*</button>*/}
+            </header>
+            <main className="App">
                 <button onClick={() => getLinkRedirect('https://test.root-vpn.ru/connect/run')}>
                     Подключиться
                 </button>
-            </header>
-            <main className="App">
                 <button onClick={() => download_app()}>
                     Скачать приложение
                 </button>

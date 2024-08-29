@@ -22,9 +22,9 @@ function App() {
 
         axios.post('https://test.root-vpn.ru/check/subscription', {'user_id': user.id})
             .then((response) => {
-                const { status, expirationDate } = response.data;
+                const { status, subscription } = response.data;
                 if (status === 'success') {
-                    setSubscriptionInfo(`Ваша подписка активна до ${expirationDate}`);
+                    setSubscriptionInfo(`Ваша подписка активна до ${subscription}`);
                 } else {
                     setSubscriptionInfo('У вас нет активных подписок');
                 }

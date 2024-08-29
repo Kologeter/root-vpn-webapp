@@ -7,6 +7,7 @@ import './App.css';
 function App() {
 
     const [userName, setUserName] = useState(''); // Состояние для хранения имени пользователя
+    const [subscriptionInfo, setSubscriptionInfo] = useState(''); // Состояние для хранения информации о подписке
 
     useEffect(() => {
         // Инициализация Telegram WebApp
@@ -18,6 +19,20 @@ function App() {
         if (user) {
             setUserName(user.first_name);
         }
+
+        axios.post('https://test.root-vpn.ru/check/subscription', {'user_id': user.id})
+            .then((response) => {
+                const { status, expirationDate } = response.data;
+                if (status === 'success') {
+                    setSubscriptionInfo(`Ваша подписка активна до ${expirationDate}`);
+                } else {
+                    setSubscriptionInfo('У вас нет активных подписок');
+                }
+            })
+            .catch((error) => {
+                console.error('Ошибка при получении информации о подписке:', error);
+                setSubscriptionInfo('У вас нет активных подписок');
+            });
 
         tg.MainButton.setText("Подключиться");
         tg.MainButton.show();
@@ -99,16 +114,16 @@ function App() {
             });
     };
 
-    const sendUserData = () => {
-        const telegram = window.Telegram.WebApp;
-        const user = telegram.initDataUnsafe?.user;
-
-        if (user) {
-            telegram.sendData(JSON.stringify(user)); // Отправка данных в чат
-        } else {
-            telegram.sendData("User data is not available.");
-        }
-    };
+    // const sendUserData = () => {
+    //     const telegram = window.Telegram.WebApp;
+    //     const user = telegram.initDataUnsafe?.user;
+    //
+    //     if (user) {
+    //         telegram.sendData(JSON.stringify(user)); // Отправка данных в чат
+    //     } else {
+    //         telegram.sendData("User data is not available.");
+    //     }
+    // };
 
     return (
         <div className="App">
@@ -124,6 +139,7 @@ function App() {
                 {/*<button onClick={sendUserData}>*/}
                 {/*    Send User Data*/}
                 {/*</button>*/}
+                <p>{subscriptionInfo}</p>
             </header>
             <main className="App">
                 <button onClick={() => getLinkRedirect('https://test.root-vpn.ru/connect/run')}>

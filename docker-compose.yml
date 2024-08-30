@@ -1,6 +1,6 @@
-#networks:
-#  anastasi_nails_default:
-#    external: True
+networks:
+  anastasi_nails_default:
+    external: True
 
 services:
 #  backend:
@@ -15,5 +15,5 @@ services:
     restart: always
     ports:
       - '3022:3022'
-#    networks:
-#      - anastasi_nails_default
+    networks:
+      - anastasi_nails_default

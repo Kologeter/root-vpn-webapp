@@ -20,7 +20,7 @@ function App() {
             setUserName(user.first_name);
         }
 
-        axios.post('https://test.root-vpn.ru/check/subscription', {'user_id': user.id.toString()})
+        axios.post('https://root-vpn.ru/check/subscription', {'user_id': user.id.toString()})
             .then((response) => {
                 const { status, subscription } = response.data;
                 if (status === 'success') {
@@ -40,7 +40,7 @@ function App() {
         tg.MainButton.onClick(() => {
             // Добавьте логику подключения VPN здесь
             console.log("Подключение к VPN");
-            getLinkRedirect('https://test.root-vpn.ru/connect/run');
+            getLinkRedirect('https://root-vpn.ru/connect/run');
         });
 
         tg.ready();
@@ -142,7 +142,7 @@ function App() {
                 <p>{subscriptionInfo}</p>
             </header>
             <main className="App">
-                <button onClick={() => getLinkRedirect('https://test.root-vpn.ru/connect/run')}>
+                <button onClick={() => getLinkRedirect('https://root-vpn.ru/connect/run')}>
                     Подключиться
                 </button>
                 <button onClick={() => download_app()}>

@@ -1,6 +1,6 @@
-networks:
-  anastasi_nails_default:
-    external: True
+#networks:
+#  anastasi_nails_default:
+#    external: True
 
 services:
 #  backend:
@@ -9,11 +9,11 @@ services:
 #    networks:
 #      - dev
 
-  frontend:
+  frontend-test:
     build:
       context: ./frontend
     restart: always
     ports:
       - '3000:3000'
-    networks:
-      - anastasi_nails_default
+#    networks:
+#      - anastasi_nails_default

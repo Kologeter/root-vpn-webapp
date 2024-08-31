@@ -8,6 +8,8 @@ function App() {
 
     const [userName, setUserName] = useState(''); // Состояние для хранения имени пользователя
     const [subscriptionInfo, setSubscriptionInfo] = useState(''); // Состояние для хранения информации о подписке
+    const [hasSubscription, setHasSubscription] = useState(false); // Состояние для отслеживания наличия подписки
+    const site = 'https://test.root-vpn.ru'
 
     useEffect(() => {
         // Инициализация Telegram WebApp
@@ -20,18 +22,21 @@ function App() {
             setUserName(user.first_name);
         }
 
-        axios.post('https://root-vpn.ru/check/subscription', {'user_id': user.id.toString()})
+        axios.post(`${site}/check/subscription`, {'user_id': user.id.toString()})
             .then((response) => {
                 const { status, subscription } = response.data;
                 if (status === 'success') {
                     setSubscriptionInfo(`Ваша подписка активна до ${subscription}`);
+                    setHasSubscription(true); // Устанавливаем, что подписка есть
                 } else {
                     setSubscriptionInfo('У вас нет активных подписок');
+                    setHasSubscription(false); // Устанавливаем, что подписка есть
                 }
             })
             .catch((error) => {
                 console.error('Ошибка при получении информации о подписке:', error);
                 setSubscriptionInfo('У вас нет активных подписок');
+                setHasSubscription(false); // Устанавливаем, что подписка есть
             });
 
         tg.MainButton.setText("Подключиться");
@@ -40,7 +45,7 @@ function App() {
         tg.MainButton.onClick(() => {
             // Добавьте логику подключения VPN здесь
             console.log("Подключение к VPN");
-            getLinkRedirect('https://root-vpn.ru/connect/run');
+            getLinkRedirect(`${site}/connect/run`);
         });
 
         tg.ready();
@@ -114,6 +119,48 @@ function App() {
             });
     };
 
+    const getTechSupport = () => {
+        const tg = window.Telegram.WebApp;
+        const urlRedirect = 'https://t.me/Kologeter';
+        tg.openTelegramLink(urlRedirect);
+    }
+
+    const stopSubscription = () => {
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe?.user;
+
+        if (!user || !user.id) {
+            console.error('User or user ID is not available.');
+            return;
+        }
+
+        axios.post(`${site}/stop/subscription`, { 'user_id': user.id.toString() })
+            .then((response) => {
+                if (response.data.status === 'success') {
+                    setSubscriptionInfo('Ваша подписка успешно остановлена.');
+                    setHasSubscription(false); // Обновляем состояние подписки
+                } else {
+                    setSubscriptionInfo('Не удалось остановить подписку.');
+                }
+            })
+            .catch((error) => {
+                console.error('Ошибка при попытке остановить подписку:', error);
+                setSubscriptionInfo('Ошибка при остановке подписки.');
+            });
+    }
+
+    const buySubscription = () => {
+        const tg = window.Telegram.WebApp;
+        const user = tg.initDataUnsafe?.user;
+
+        axios.post(`${site}/createpayment`, { 'user_id': user.id, 'username': user.username})
+            .then((response) => {
+                if (response.data?.status === 'success') {
+                    tg.openLink(response.data?.payment_link);
+                }
+            })
+    }
+
     // const sendUserData = () => {
     //     const telegram = window.Telegram.WebApp;
     //     const user = telegram.initDataUnsafe?.user;
@@ -142,12 +189,25 @@ function App() {
                 <p>{subscriptionInfo}</p>
             </header>
             <main className="App">
-                <button onClick={() => getLinkRedirect('https://root-vpn.ru/connect/run')}>
+                <button onClick={() => getLinkRedirect(`${site}/connect/run`)}>
                     Подключиться
                 </button>
+                {!hasSubscription &&
+                    (<button onClick={() => buySubscription()}>
+                    Купить подписку
+                    </button>)
+                }
                 <button onClick={() => download_app()}>
                     Скачать приложение
                 </button>
+                <button onClick={() => getTechSupport()}>
+                    Техподдержка
+                </button>
+                {hasSubscription && (
+                    <button onClick={() => stopSubscription()}>
+                        Остановить подписку
+                    </button>
+                )}
             </main>
         </div>
     );

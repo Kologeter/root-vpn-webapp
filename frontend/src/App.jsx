@@ -152,7 +152,7 @@ function App() {
     const buySubscription = () => {
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe?.user;
-
+        console.log('buySub')
         axios.post(`${site}/createpayment`, { 'user_id': user.id, 'username': user.username.toString()})
             .then((response) => {
                 console.log(response)
@@ -161,7 +161,7 @@ function App() {
                 } else {
                     tg.showAlert('Не удалось создать платеж.');
                 }
-            })
+            });
     }
 
     // const sendUserData = () => {

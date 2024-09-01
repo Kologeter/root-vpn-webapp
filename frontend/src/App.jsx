@@ -153,8 +153,9 @@ function App() {
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe?.user;
 
-        axios.post(`${site}/createpayment`, { 'user_id': user.id, 'username': user.username})
+        axios.post(`${site}/createpayment`, { 'user_id': user.id, 'username': user.username.toString()})
             .then((response) => {
+                console.log(response)
                 if (response.data?.status === 'success') {
                     tg.openLink(response.data?.payment_link);
                 } else {

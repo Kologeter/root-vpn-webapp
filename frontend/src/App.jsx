@@ -157,6 +157,8 @@ function App() {
             .then((response) => {
                 if (response.data?.status === 'success') {
                     tg.openLink(response.data?.payment_link);
+                } else {
+                    tg.showAlert('Не удалось создать платеж.');
                 }
             })
     }

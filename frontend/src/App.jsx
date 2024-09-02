@@ -163,7 +163,7 @@ function App() {
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe?.user;
         console.log('buySub')
-        axios.post(`${site}/createpayment`, { 'user_id': user.id, 'username': user.username.toString()})
+        axios.post(`${site}/createpayment`, {'user_id': user.id.toString(), 'username': user.username?.toString() || null})
             .then((response) => {
                 console.log(response)
                 if (response.data?.status === 'success') {

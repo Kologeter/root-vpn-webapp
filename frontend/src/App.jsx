@@ -140,10 +140,12 @@ function App() {
 
         axios.post(`${site}/stop/subscription`, { 'user_id': user.id.toString() })
             .then((response) => {
-                if (response.data.status === 'success') {
+                if (response.data?.status === 'success') {
+                    tg.showAlert('Подписка успешно остановлена');
                     setSubscriptionInfo('Ваша подписка успешно остановлена.');
                     setHasSubscription(false); // Обновляем состояние подписки
                 } else {
+                    tg.showAlert('Не удалось остановить подписку');
                     setSubscriptionInfo('Не удалось остановить подписку.');
                 }
             })

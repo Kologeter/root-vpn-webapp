@@ -28,11 +28,10 @@ function App() {
                 if (status === 'success') {
                     setSubscriptionInfo(`Ваша подписка активна до ${subscription}`);
                     setHasSubscription(true); // Устанавливаем, что подписка есть
-                } else if (response.data.error === 'error') {
+                } else if (response.data.status === 'error' && response.data.error === 'User is inactive') {
                     setSubscriptionInfo('Скорее подключайтесь!');
                     setHasSubscription(false); // Устанавливаем, что подписки нет
-                }
-                else {
+                } else {
                     setSubscriptionInfo('У вас нет активных подписок');
                     setHasSubscription(false); // Устанавливаем, что подписки нет
                 }

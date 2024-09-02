@@ -28,9 +28,13 @@ function App() {
                 if (status === 'success') {
                     setSubscriptionInfo(`Ваша подписка активна до ${subscription}`);
                     setHasSubscription(true); // Устанавливаем, что подписка есть
-                } else {
+                } else if (response.data.error === 'error') {
+                    setSubscriptionInfo('Скорее подключайтесь!');
+                    setHasSubscription(false); // Устанавливаем, что подписки нет
+                }
+                else {
                     setSubscriptionInfo('У вас нет активных подписок');
-                    setHasSubscription(false); // Устанавливаем, что подписка есть
+                    setHasSubscription(false); // Устанавливаем, что подписки нет
                 }
             })
             .catch((error) => {

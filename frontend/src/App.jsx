@@ -31,7 +31,12 @@ function App() {
                 } else if (response.data.status === 'error' && response.data.error === 'User is inactive') {
                     setSubscriptionInfo('Скорее подключайтесь!');
                     setHasSubscription(false); // Устанавливаем, что подписки нет
-                } else {
+                } else if (response.data.status === 'error' && response.data.error === 'Subscription not started yet')
+                {
+                    setSubscriptionInfo('Подписка еще не началась');
+                    setHasSubscription(false); // Устанавливаем, что подписки нет
+                }
+                else {
                     setSubscriptionInfo('У вас нет активных подписок');
                     setHasSubscription(false); // Устанавливаем, что подписки нет
                 }

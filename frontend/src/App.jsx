@@ -22,6 +22,24 @@ function App() {
             setUserName(user.first_name);
         }
 
+        const socket = new WebSocket("ws://test.root-vpn.ru/createpayment");
+
+        socket.onmessage = function(event) {
+            const message = event.data;
+            console.log("Message from server:", message);
+
+            // Обновление информации о подписке на основе сообщения от WebSocket
+            if (message === "Payment received!") {
+                // setSubscriptionInfo('Спасибо за оплату! Ваша подписка активирована.');
+                tg.openTelegramLink(`${site}/success`)
+                setHasSubscription(true);
+            }
+        };
+
+        socket.onclose = function() {
+            console.log("WebSocket connection closed");
+        };
+
         axios.post(`${site}/check/subscription`, {'user_id': user.id.toString()})
             .then((response) => {
                 const { status, subscription } = response.data;
@@ -57,6 +75,10 @@ function App() {
         });
 
         tg.ready();
+
+        return () => {
+            socket.close(); // Закрываем WebSocket при размонтировании компонента
+        };
     }, []);
 
     const download_app = () => {
@@ -163,6 +185,7 @@ function App() {
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe?.user;
         console.log('buySub')
+
         axios.post(`${site}/createpayment`, { 'user_id': user.id.toString()})
             .then((response) => {
                 console.log(response)

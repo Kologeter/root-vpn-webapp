@@ -22,7 +22,8 @@ function App() {
             setUserName(user.first_name);
         }
 
-        const socket = new WebSocket("ws://test.root-vpn.ru/ws");
+        const socket = new WebSocket(`ws://test.root-vpn.ru/ws`);
+        // const socket = new WebSocket("ws://127.0.0.1:2530/ws");
 
         socket.onmessage = function(event) {
             const message = event.data;
@@ -31,6 +32,7 @@ function App() {
             // Обновление информации о подписке на основе сообщения от WebSocket
             if (message === "Payment received!") {
                 // setSubscriptionInfo('Спасибо за оплату! Ваша подписка активирована.');
+                tg.showAlert('Тест')
                 tg.openTelegramLink(`${site}/success`)
                 setHasSubscription(true);
             }

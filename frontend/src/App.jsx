@@ -1,14 +1,18 @@
 import {useEffect, useState} from 'react';
 import { Player } from '@lottiefiles/react-lottie-player';
 import duckAnimation from './assets/AnimatedSticker.json';
+// import {Route, Routes} from 'react-router-dom'
 import axios from 'axios';
 import './App.css';
+import PaymentAlert from "./PaymentAlert.jsx";
 
 function App() {
 
     const [userName, setUserName] = useState(''); // Состояние для хранения имени пользователя
     const [subscriptionInfo, setSubscriptionInfo] = useState(''); // Состояние для хранения информации о подписке
     const [hasSubscription, setHasSubscription] = useState(false); // Состояние для отслеживания наличия подписки
+    const [showAlert, setShowAlert] = useState(false); // состояние для отображения уведомления
+    const [alertMessage, setAlertMessage] = useState(''); // сообщение для уведомления
     const site = 'https://test.root-vpn.ru'
 
     useEffect(() => {
@@ -32,8 +36,10 @@ function App() {
             // Обновление информации о подписке на основе сообщения от WebSocket
             if (message === "Payment received!") {
                 // setSubscriptionInfo('Спасибо за оплату! Ваша подписка активирована.');
+                setAlertMessage('Платеж успешно выполнен!'); // устанавливаем сообщение для уведомления
+                setShowAlert(true); // показываем уведомление
                 tg.showAlert('Тест')
-                tg.openTelegramLink(`${site}/success`)
+                tg.openLink(`${site}/success`)
                 setHasSubscription(true);
             }
         };
@@ -246,6 +252,13 @@ function App() {
                         Остановить подписку
                     </button>
                 )}
+
+                {/* Компонент для отображения уведомления */}
+                <PaymentAlert
+                    message={alertMessage}
+                    show={showAlert}
+                    onClose={() => setShowAlert(false)}
+                />
             </main>
         </div>
     );

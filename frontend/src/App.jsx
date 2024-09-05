@@ -22,7 +22,7 @@ function App() {
             setUserName(user.first_name);
         }
 
-        const socket = new WebSocket(`ws://test.root-vpn.ru/ws`);
+        const socket = new WebSocket(`wss://test.root-vpn.ru/ws`);
         // const socket = new WebSocket("ws://127.0.0.1:2530/ws");
 
         socket.onmessage = function(event) {

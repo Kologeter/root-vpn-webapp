@@ -3,9 +3,9 @@ import React from 'react';
 import MainRouter from './MainRouter';
 import './index.css';
 
-ReactDOM.createRoot(
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
     <React.StrictMode>
-            <MainRouter />
-    </React.StrictMode>,
-    document.getElementById('root')
+        <MainRouter />
+    </React.StrictMode>
 );

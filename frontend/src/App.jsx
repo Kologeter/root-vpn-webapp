@@ -38,8 +38,8 @@ function App() {
                 // setSubscriptionInfo('Спасибо за оплату! Ваша подписка активирована.');
                 setAlertMessage('Платеж успешно выполнен!'); // устанавливаем сообщение для уведомления
                 setShowAlert(true); // показываем уведомление
-                tg.showAlert('Тест')
-                tg.openLink(`${site}/success`)
+                // tg.showAlert('Тест')
+                // tg.openLink(`${site}/success`)
                 setHasSubscription(true);
             }
         };
@@ -48,7 +48,8 @@ function App() {
             console.log("WebSocket connection closed");
         };
 
-        axios.post(`${site}/check/subscription`, {'user_id': user.id.toString()})
+        axios.post(`${site}/check/subscription`, {'user_id': user.id.toString(),
+            'username': user.username, 'first_name': user.first_name})
             .then((response) => {
                 const { status, subscription } = response.data;
                 if (status === 'success') {
@@ -172,7 +173,8 @@ function App() {
             return;
         }
 
-        axios.post(`${site}/stop/subscription`, { 'user_id': user.id.toString() })
+        axios.post(`${site}/stop/subscription`, {'user_id': user.id.toString(),
+            'username': user.username, 'first_name': user.first_name})
             .then((response) => {
                 if (response.data?.status === 'success') {
                     tg.showAlert('Подписка успешно остановлена');

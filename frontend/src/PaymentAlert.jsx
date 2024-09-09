@@ -7,7 +7,7 @@ const PaymentAlert = ({ message, show, onClose }) => {
         if (show) {
             const timer = setTimeout(() => {
                 onClose(); // закрываем уведомление через 3 секунды
-            }, 3000);
+            }, 6000);
 
             return () => clearTimeout(timer); // очищаем таймер при размонтировании компонента
         }

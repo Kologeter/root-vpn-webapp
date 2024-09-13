@@ -1,0 +1,41 @@
+.change-country-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f8ff;
+}
+
+/* Для контейнера успеха */
+.success-container {
+    background-color: #e6ffed; /* Светло-зелёный фон */
+    border: 1px solid #b2d8b2; /* Зелёная рамка */
+    padding: 20px; /* Внутренние отступы */
+    border-radius: 10px; /* Скругление углов */
+    margin: 10px 0; /* Отступы сверху и снизу */
+    text-align: center; /* Центрирование текста */
+}
+
+/* Для заголовка успеха */
+.change-country-succes {
+    color: #28a745; /* Зелёный цвет текста */
+    font-size: 24px; /* Размер текста */
+    font-weight: bold; /* Жирный шрифт */
+}
+
+/* Для контейнера ошибки */
+.error-container {
+    background-color: #ffe6e6; /* Светло-красный фон */
+    border: 1px solid #d8b2b2; /* Красная рамка */
+    padding: 20px; /* Внутренние отступы */
+    border-radius: 10px; /* Скругление углов */
+    margin: 10px 0; /* Отступы сверху и снизу */
+    text-align: center; /* Центрирование текста */
+}
+
+/* Для заголовка ошибки */
+.change-country-error {
+    color: #dc3545; /* Красный цвет текста */
+    font-size: 24px; /* Размер текста */
+    font-weight: bold; /* Жирный шрифт */
+}

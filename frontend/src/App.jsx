@@ -4,7 +4,9 @@ import duckAnimation from './assets/AnimatedSticker.json';
 // import {Route, Routes} from 'react-router-dom'
 import axios from 'axios';
 import './App.css';
+import { useNavigate } from 'react-router-dom';
 import PaymentAlert from "./PaymentAlert.jsx";
+// import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
 
@@ -14,6 +16,7 @@ function App() {
     const [showAlert, setShowAlert] = useState(false); // состояние для отображения уведомления
     const [alertMessage, setAlertMessage] = useState(''); // сообщение для уведомления
     const site = 'https://test.root-vpn.ru'
+    const navigate = useNavigate();
 
     useEffect(() => {
         // Инициализация Telegram WebApp
@@ -125,6 +128,10 @@ function App() {
         //
         // }
     }
+
+    const goToCountryPage = () => {
+        navigate('/country'); // Программная навигация на страницу /country
+    };
 
     const getLinkRedirect = (url) => {
         const telegram = window.Telegram.WebApp;
@@ -243,6 +250,9 @@ function App() {
                     Купить подписку
                     </button>)
                 }
+                <button onClick={() => goToCountryPage()}>
+                    Сменить страну
+                </button> {/*Здесь нужен маршрут на страницу /country */}
                 <button onClick={() => download_app()}>
                     Скачать приложение
                 </button>

@@ -45,7 +45,7 @@ function CountryPage() {
             return;
         }
 
-        axios.get(`${site}/changecountry`, {'user_id': user.id, 'country': country})
+        axios.post(`${site}/changecountry`, {'user_id': user.id, 'country': country})
             .then((response) => {
                 if (response.status === 200) {
                     return <div className="success-container">

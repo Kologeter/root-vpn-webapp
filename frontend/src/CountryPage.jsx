@@ -1,8 +1,8 @@
 // import React from 'react';
 import './CountryPage.css';
 // import PaymentAlert from "./PaymentAlert.jsx";
-import {useEffect} from "react";
 import axios from "axios";
+import {useState} from "react";
 
 function CountryPage() {
 
@@ -28,13 +28,7 @@ function CountryPage() {
 
     const site = 'https://test.root-vpn.ru'
 
-    useEffect(() => {
-
-        // const tg = window.Telegram.WebApp;
-
-        // const user = tg.initDataUnsafe?.user;
-
-    });
+    const [isSuccess, setIsSuccess] = useState(false);
 
     const sendCountry = (country) => {
         const telegram = window.Telegram.WebApp;
@@ -45,29 +39,32 @@ function CountryPage() {
             return;
         }
 
-        axios.post(`${site}/changecountry`, {'user_id': user.id, 'country': country})
+        axios.post(`${site}/changecountry`, { 'user_id': user.id, 'country': country })
             .then((response) => {
                 if (response.status === 200) {
-                    return <div className="success-container">
-                        <h1 className="change-country-succes">Ваша страна успешно изменена на ${country}</h1>
-                    </div>
+                    setIsSuccess(true);
                 } else {
-                    return <div className="error-container">
-                        <h1 className="change-country-error">Ошибка при смене страны</h1>
-                    </div>
+                    setIsSuccess(false);
                 }
-                // const redirectUrl = response.status;
-                // console.log('redirectUrl', redirectUrl);
-                // if (redirectUrl) {
-                //     // Выполняем редирект на полученную ссылку
-                //     telegram.openLink(redirectUrl);
-                // } else {
-                //     console.error('Redirect URL is not available.');
-                // }
             })
             .catch((error) => {
                 console.error('Error:', error);
+                setIsSuccess(false);
             });
+
+        return (
+            <div>
+                {isSuccess ? (
+                    <div className="success-container">
+                        <h1 className="change-country-succes">Ваша страна успешно изменена на {country}</h1>
+                    </div>
+                ) : (
+                    <div className="error-container">
+                        <h1 className="change-country-error">Ошибка при смене страны</h1>
+                    </div>
+                )}
+            </div>
+        );
     }
 
     return (

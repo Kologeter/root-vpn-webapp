@@ -41,6 +41,7 @@ function CountryPage() {
 
         axios.post(`${site}/changecountry`, { 'user_id': user.id, 'country': country })
             .then((response) => {
+                console.log('response ', response)
                 if (response.status === 200) {
                     setIsSuccess(true);
                 } else {

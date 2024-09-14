@@ -29,6 +29,7 @@ function CountryPage() {
     const site = 'https://test.root-vpn.ru'
 
     const [isSuccess, setIsSuccess] = useState(false);
+    const [selectedCountry, setSelectedCountry] = useState(''); // Сохраняем выбранную страну
 
     const sendCountry = (country) => {
         const telegram = window.Telegram.WebApp;
@@ -44,6 +45,7 @@ function CountryPage() {
                 console.log('response ', response)
                 if (response.status === 200) {
                     setIsSuccess(true);
+                    setSelectedCountry(country);
                 } else {
                     setIsSuccess(false);
                 }
@@ -53,19 +55,19 @@ function CountryPage() {
                 setIsSuccess(false);
             });
 
-        return (
-            <div>
-                {isSuccess ? (
-                    <div className="success-container">
-                        <h1 className="change-country-succes">Ваша страна успешно изменена на {country}</h1>
-                    </div>
-                ) : (
-                    <div className="error-container">
-                        <h1 className="change-country-error">Ошибка при смене страны</h1>
-                    </div>
-                )}
-            </div>
-        );
+        // return (
+        //     <div>
+        //         {isSuccess ? (
+        //             <div className="success-container">
+        //                 <h1 className="change-country-succes">Ваша страна успешно изменена на {country}</h1>
+        //             </div>
+        //         ) : (
+        //             <div className="error-container">
+        //                 <h1 className="change-country-error">Ошибка при смене страны</h1>
+        //             </div>
+        //         )}
+        //     </div>
+        // );
     }
 
     return (
@@ -81,6 +83,18 @@ function CountryPage() {
                     🇫🇮 Финляндия (резерв)
                 </button>
             </main>
+            {/* Рендеринг сообщения в зависимости от успешности запроса */}
+            {isSuccess ? (
+                <div className="success-container">
+                    <h1 className="change-country-success">Ваша страна успешно изменена на {selectedCountry}</h1>
+                </div>
+            ) : (
+                isSuccess === false && (
+                    <div className="error-container">
+                        <h1 className="change-country-error">Ошибка при смене страны</h1>
+                    </div>
+                )
+            )}
         </div>
     );
 }

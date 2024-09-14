@@ -41,3 +41,36 @@
     font-size: 24px; /* Размер текста */
     font-weight: bold; /* Жирный шрифт */
 }
+/* Общие стили для всплывающих окон */
+.alert {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 15px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    z-index: 1000;
+    animation: fadeInOut 4s forwards;
+}
+
+/* Успешное сообщение */
+.alert-success {
+    background-color: #4CAF50; /* Зеленый цвет для успеха */
+}
+
+/* Сообщение об ошибке */
+.alert-error {
+    background-color: #f44336; /* Красный цвет для ошибки */
+}
+
+/* Анимация появления и исчезновения */
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+}

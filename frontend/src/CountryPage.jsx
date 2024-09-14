@@ -89,16 +89,16 @@ function CountryPage() {
             </main>
             {/* Рендеринг сообщения в зависимости от успешности запроса */}
             {isSuccess && (
-                // <div className="success-container">
-                <h1 className="change-country-success">Ваша страна успешно изменена на {selectedCountry}</h1>
-                // </div>
+                <div className="alert alert-success">
+                    <span>Ваша страна успешно изменена на {selectedCountry}</span>
+                </div>
             )}
 
-            {/* Сообщение об ошибке */}
+            {/* Всплывающее окно об ошибке */}
             {hasError && (
-                // <div className="error-container">
-                <h1 className="change-country-error">Ошибка при смене страны</h1>
-                // </div>
+                <div className="alert alert-error">
+                    <span>Ошибка при смене страны</span>
+                </div>
             )}
         </div>
     );

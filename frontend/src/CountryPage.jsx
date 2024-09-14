@@ -29,6 +29,7 @@ function CountryPage() {
     const site = 'https://test.root-vpn.ru'
 
     const [isSuccess, setIsSuccess] = useState(false);
+    const [hasError, setHasError] = useState(false);  // Для отслеживания ошибок
     const [selectedCountry, setSelectedCountry] = useState(''); // Сохраняем выбранную страну
 
     const sendCountry = (country) => {
@@ -45,14 +46,17 @@ function CountryPage() {
                 console.log('response ', response)
                 if (response.status === 200) {
                     setIsSuccess(true);
+                    setHasError(false);
                     setSelectedCountry(country);
                 } else {
                     setIsSuccess(false);
+                    setHasError(true);
                 }
             })
             .catch((error) => {
                 console.error('Error:', error);
                 setIsSuccess(false);
+                setHasError(true);
             });
 
         // return (
@@ -84,16 +88,17 @@ function CountryPage() {
                 </button>
             </main>
             {/* Рендеринг сообщения в зависимости от успешности запроса */}
-            {isSuccess ? (
-                <div className="success-container">
-                    <h1 className="change-country-success">Ваша страна успешно изменена на {selectedCountry}</h1>
-                </div>
-            ) : (
-                isSuccess === false && (
-                    <div className="error-container">
-                        <h1 className="change-country-error">Ошибка при смене страны</h1>
-                    </div>
-                )
+            {isSuccess && (
+                // <div className="success-container">
+                <h1 className="change-country-success">Ваша страна успешно изменена на {selectedCountry}</h1>
+                // </div>
+            )}
+
+            {/* Сообщение об ошибке */}
+            {hasError && (
+                // <div className="error-container">
+                <h1 className="change-country-error">Ошибка при смене страны</h1>
+                // </div>
             )}
         </div>
     );

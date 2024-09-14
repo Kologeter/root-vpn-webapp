@@ -18,7 +18,8 @@
 
 /* Для заголовка успеха */
 .change-country-succes {
-    color: #28a745; /* Зелёный цвет текста */
+    color: var(--tg-theme-button-text-color);
+    /*color: #28a745; !* Зелёный цвет текста *!*/
     font-size: 24px; /* Размер текста */
     font-weight: bold; /* Жирный шрифт */
 }
@@ -35,7 +36,8 @@
 
 /* Для заголовка ошибки */
 .change-country-error {
-    color: #dc3545; /* Красный цвет текста */
+    /*color: #dc3545; !* Красный цвет текста *!*/
+    color: var(--tg-theme-button-text-color);
     font-size: 24px; /* Размер текста */
     font-weight: bold; /* Жирный шрифт */
 }

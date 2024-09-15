@@ -3,6 +3,8 @@ import './CountryPage.css';
 // import PaymentAlert from "./PaymentAlert.jsx";
 import axios from "axios";
 import {useState} from "react";
+import finlandFlag from './assets/images/finland.jpg';
+import bulgariaFlag from './assets/images/Flag_of_Bulgaria.svg';
 
 function CountryPage() {
 
@@ -28,7 +30,7 @@ function CountryPage() {
 
     const site = 'https://test.root-vpn.ru'
 
-    const [isSuccess, setIsSuccess] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(null);
     const [hasError, setHasError] = useState(false);  // Для отслеживания ошибок
     const [selectedCountry, setSelectedCountry] = useState(''); // Сохраняем выбранную страну
 
@@ -40,6 +42,9 @@ function CountryPage() {
             console.error('User or user ID is not available.');
             return;
         }
+
+        setIsSuccess(null);
+        setHasError(false);
 
         axios.post(`${site}/changecountry`, { 'user_id': user.id, 'country': country })
             .then((response) => {
@@ -78,12 +83,15 @@ function CountryPage() {
         <div className="change-country-container">
             <main className="Country-change-button">
                 <button onClick={() => sendCountry('fast')}>
+                    <img src={finlandFlag} alt="Финляндия" className="flag-icon"/>
                     🇫🇮 Финляндия
                 </button>
                 <button onClick={() => sendCountry('no_ads')}>
+                    <img src={bulgariaFlag} alt="Болгария" className="flag-icon"/>
                     🇧🇬 Болгария
                 </button>
                 <button onClick={() => sendCountry('no_ads_185')}>
+                    <img src={finlandFlag} alt="Финляндия" className="flag-icon"/>
                     🇫🇮 Финляндия (резерв)
                 </button>
             </main>

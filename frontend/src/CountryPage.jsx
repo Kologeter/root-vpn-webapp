@@ -43,12 +43,11 @@ function CountryPage() {
             return;
         }
 
-        setIsSuccess(null);
-        setHasError(false);
-
         axios.post(`${site}/changecountry`, { 'user_id': user.id, 'country': country })
             .then((response) => {
                 console.log('response ', response)
+                setIsSuccess(null);
+                setHasError(false);
                 if (response.status === 200) {
                     setIsSuccess(true);
                     setHasError(false);
@@ -84,15 +83,15 @@ function CountryPage() {
             <main className="Country-change-button">
                 <button onClick={() => sendCountry('fast')}>
                     <img src={finlandFlag} alt="Финляндия" className="flag-icon"/>
-                    🇫🇮 Финляндия
+                    Финляндия
                 </button>
                 <button onClick={() => sendCountry('no_ads')}>
                     <img src={bulgariaFlag} alt="Болгария" className="flag-icon"/>
-                    🇧🇬 Болгария
+                    Болгария
                 </button>
                 <button onClick={() => sendCountry('no_ads_185')}>
                     <img src={finlandFlag} alt="Финляндия" className="flag-icon"/>
-                    🇫🇮 Финляндия (резерв)
+                    Финляндия (резерв)
                 </button>
             </main>
             {/* Рендеринг сообщения в зависимости от успешности запроса */}

@@ -67,15 +67,11 @@ function CountryPage() {
             </main>
 
             {/* Рендеринг сообщения в зависимости от успешности запроса */}
-            {isSuccess === true && (
-                <div className="alert alert-success">
-                    <span>Ваша страна успешно изменена на {selectedCountry}</span>
-                </div>
-            )}
-
-            {isSuccess === false && (
-                <div className="alert alert-error">
-                    <span>Ошибка при смене страны</span>
+            {showAlert && (
+                <div className={`alert ${isSuccess ? 'alert-success' : 'alert-error'}`}>
+                    <span>
+                        {isSuccess ? `Ваша страна успешно изменена на ${selectedCountry}` : 'Ошибка при смене страны'}
+                    </span>
                 </div>
             )}
         </div>

@@ -9,7 +9,7 @@ services:
 #    networks:
 #      - dev
 
-  frontend-test:
+  frontend-test-test:
     build:
       context: ./frontend
     restart: always

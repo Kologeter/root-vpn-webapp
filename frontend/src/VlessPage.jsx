@@ -35,7 +35,7 @@ function VlessSettings() {
     const closeQrPopup = () => setQrVisible(false);
 
     useEffect(() => {
-        fetch(`https://root-vpn.ru/vless/conf/${id}`).then(
+        fetch(`https://test.root-vpn.ru/vless/conf/getinfo/${id}`).then(
             response => {
                 if (!response.ok) {
                     throw new Error('Ошибка сети');

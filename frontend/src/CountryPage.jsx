@@ -9,7 +9,6 @@ import bulgariaFlag from './assets/images/Flag_of_Bulgaria.svg';
 function CountryPage() {
     const site = 'https://test.root-vpn.ru';
     const [isSuccess, setIsSuccess] = useState(null);
-    // const [hasError, setHasError] = useState(false);
     const [showAlert, setShowAlert] = useState(false);  // Для управления показом алерта
     const [selectedCountry, setSelectedCountry] = useState('');
 
@@ -41,6 +40,12 @@ function CountryPage() {
     };
 
     useEffect(() => {
+
+        const tg = window.Telegram.WebApp;
+
+        tg.BackButton.isVisible();
+
+
         if (showAlert) {
             const timer = setTimeout(() => {
                 setShowAlert(false);

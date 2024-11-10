@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import { QRCode } from 'qrcode.react';
+import QRCode from 'qrcode.react';
 import './App.css';
 import {useParams} from "react-router-dom";
 

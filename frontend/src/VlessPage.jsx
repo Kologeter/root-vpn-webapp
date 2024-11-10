@@ -1,30 +1,28 @@
 import {useEffect, useState} from 'react';
-import { QRCodeSVG } from 'qrcode.react';
+import {QRCodeSVG} from 'qrcode.react';
 import './App.css';
 import {useParams} from "react-router-dom";
 
 function VlessSettings() {
     const { id } = useParams();
-    const [copied, setCopied] = useState(false);
+    const [copiedIndex, setCopiedIndex] = useState(null);
     const [qrVisible, setQrVisible] = useState(false);
     const [qrData, setQrData] = useState('');
     const [expirationDate, setExpirationDate] = useState('');
     const [linkVless, setLinkVless] = useState('');
     const [username, setUsername] = useState('');
-
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const links = [
         linkVless,
         "False"
-    ];
+    ].filter(Boolean);  // Исключаем пустые значения
 
-
-    const handleCopy = (link) => {
+    const handleCopy = (link, index) => {
         navigator.clipboard.writeText(link);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 1500);
     };
 
     const showQrCode = (link) => {
@@ -35,18 +33,19 @@ function VlessSettings() {
     const closeQrPopup = () => setQrVisible(false);
 
     useEffect(() => {
-        fetch(`https://test.root-vpn.ru/vless/conf/getinfo/${id}`).then(
-            response => {
+        fetch(`https://test.root-vpn.ru/vless/conf/getinfo/${id}`)
+            .then(response => {
                 if (!response.ok) {
                     throw new Error('Ошибка сети');
                 }
                 return response.json();
-            }).then(data => {
-            setUsername(data.username);
-            setExpirationDate(data.expirationDate);
-            setLinkVless(data.LinkVless)
-            setLoading(false);
-        })
+            })
+            .then(data => {
+                setUsername(data.username);
+                setExpirationDate(data.expirationDate);
+                setLinkVless(data.LinkVless);
+                setLoading(false);
+            })
             .catch(err => {
                 setError(err.message);
                 setLoading(false);
@@ -70,15 +69,15 @@ function VlessSettings() {
                 {links.map((link, index) => (
                     <li key={index}>
                         <input type="text" value={link} readOnly />
-                        <button onClick={() => handleCopy(link)} className="copy-button">
-                            {copied ? 'Copied!' : 'Copy'}
+                        <button onClick={() => handleCopy(link, index)} className="copy-button">
+                            {copiedIndex === index ? 'Copied!' : 'Copy'}
                         </button>
                         <button onClick={() => showQrCode(link)} className="qr-button">QR Code</button>
                     </li>
                 ))}
             </ul>
 
-            {qrVisible && (
+            {qrVisible && qrData && (
                 <div className="qr-popup">
                     <div className="qr-close-button">
                         <button onClick={closeQrPopup}>X</button>
@@ -91,3 +90,4 @@ function VlessSettings() {
 }
 
 export default VlessSettings;
+

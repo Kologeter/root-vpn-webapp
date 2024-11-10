@@ -12,8 +12,8 @@ function VlessSettings() {
     const [expirationDate, setExpirationDate] = useState('');
     const [linkVless, setLinkVless] = useState('');
     const [username, setUsername] = useState('');
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    // const [loading, setLoading] = useState(true);
+    // const [error, setError] = useState(null);
 
     const links = [
         linkVless,
@@ -40,16 +40,17 @@ function VlessSettings() {
                 setUsername(data.username);
                 setExpirationDate(data.expirationDate);
                 setLinkVless(data.vlessLink);
-                setLoading(false);
+                // setLoading(false);
             })
             .catch(err => {
-                setError(err.message);
-                setLoading(false);
+                console.log('Ошибка', err)
+                // setError(err.message);
+                // setLoading(false);
             });
     }, [id]);
 
-    if (loading) return <p>Загрузка...</p>;
-    if (error) return <p>Ошибка: {error}</p>;
+    // if (loading) return <p>Загрузка...</p>;
+    // if (error) return <p>Ошибка: {error}</p>;
 
     return (
         <div className="container">

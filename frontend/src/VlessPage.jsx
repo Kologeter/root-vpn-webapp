@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react';
+import axios from 'axios';
 import {QRCodeSVG} from 'qrcode.react';
 import './App.css';
 import {useParams} from "react-router-dom";
@@ -33,14 +34,9 @@ function VlessSettings() {
     const closeQrPopup = () => setQrVisible(false);
 
     useEffect(() => {
-        fetch(`https://test.root-vpn.ru/vless/conf/getinfo/${id}`)
+        axios.get(`https://test.root-vpn.ru/vless/conf/getinfo/${id}`)
             .then(response => {
-                if (!response.ok) {
-                    throw new Error('Ошибка сети');
-                }
-                return response.json();
-            })
-            .then(data => {
+                const data = response.data;
                 setUsername(data.username);
                 setExpirationDate(data.expirationDate);
                 setLinkVless(data.LinkVless);

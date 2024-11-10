@@ -39,7 +39,7 @@ function VlessSettings() {
                 const data = response.data;
                 setUsername(data.username);
                 setExpirationDate(data.expirationDate);
-                setLinkVless(data.LinkVless);
+                setLinkVless(data.vlessLink);
                 setLoading(false);
             })
             .catch(err => {

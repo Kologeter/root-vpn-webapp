@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import QRCode from 'qrcode.react';
+import { QRCodeSVG } from 'qrcode.react';
 import './App.css';
 import {useParams} from "react-router-dom";
 
@@ -83,7 +83,7 @@ function VlessSettings() {
                     <div className="qr-close-button">
                         <button onClick={closeQrPopup}>X</button>
                     </div>
-                    <QRCode value={qrData} size={256} />
+                    <QRCodeSVG value={qrData} size={256} />
                 </div>
             )}
         </div>

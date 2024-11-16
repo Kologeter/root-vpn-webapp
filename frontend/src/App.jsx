@@ -6,6 +6,7 @@ import axios from 'axios';
 import './App.css';
 import { useNavigate } from 'react-router-dom';
 import PaymentAlert from "./PaymentAlert.jsx";
+
 // import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
     const [hasSubscription, setHasSubscription] = useState(false); // Состояние для отслеживания наличия подписки
     const [showAlert, setShowAlert] = useState(false); // состояние для отображения уведомления
     const [alertMessage, setAlertMessage] = useState(''); // сообщение для уведомления
-    const site = 'https://test.root-vpn.ru'
+    const site = 'https://test.root-vpn.ru';
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -93,6 +94,10 @@ function App() {
         };
     }, []);
 
+    const goChooseProtcol = () => {
+        navigate('/protocol');
+    };
+
     const download_app = () => {
         const tg = window.Telegram.WebApp;
 
@@ -123,11 +128,7 @@ function App() {
                 tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
         }
-
-        // if (tg.platform === 'ios') {
-        //
-        // }
-    }
+    };
 
     const goToCountryPage = () => {
         navigate('/country'); // Программная навигация на страницу /country
@@ -242,9 +243,10 @@ function App() {
                 <p>{subscriptionInfo}</p>
             </header>
             <main className="App">
-                <button onClick={() => getLinkRedirect(`${site}/connect/run`)}>
-                    Подключиться
-                </button>
+                {/*<button onClick={() => getLinkRedirect(`${site}/connect/run`)}>*/}
+                {/*    Подключиться*/}
+                {/*</button>*/}
+                <button onClick={() => goChooseProtcol()}>Подключиться</button>
                 {!hasSubscription &&
                     (<button onClick={() => buySubscription()}>
                     Купить подписку

@@ -4,6 +4,8 @@ import App from './App';
 import SuccessPage from './SuccessPage';
 import CountryPage from "./CountryPage.jsx";
 import VlessSettings from "./VlessPage.jsx";
+import ProtocolPage from "./ProtocolPage.jsx";
+
 
 function MainRouter() {
     return (
@@ -12,7 +14,10 @@ function MainRouter() {
                 <Route path="/" element={<App />} />
                 <Route path="/success" element={<SuccessPage />} />
                 <Route path="/country" element={<CountryPage />} />
-                <Route path='/vless/conf/:id' element={<VlessSettings />}/>
+                <Route path='/protocol' element={<ProtocolPage />} />
+                {/*<Route path='/protocol' element={<ProtocolPage />} />*/}
+                <Route path='/vless' element={<VlessSettings />}/>
+                {/*<Route path='/outline' element={<VlessSettings />}/>*/}
             </Routes>
         </Router>
     );

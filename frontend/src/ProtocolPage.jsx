@@ -7,6 +7,8 @@ export default function ProtocolPage() {
     const site = import.meta.env.VITE_SITE || '';
     const navigate = useNavigate();
 
+    console.log('site', site)
+
 
     useEffect(() => {
         const tg = window.Telegram.WebApp;

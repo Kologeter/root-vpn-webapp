@@ -13,6 +13,7 @@ export default function VlessSettings() {
     // Обеспечить, чтобы значение site корректно передавалось:
     const site = import.meta.env.VITE_SITE || '';
 
+    console.log('site', site)
 
     const handleCopy = (link, index) => {
         navigator.clipboard.writeText(link);

@@ -23,6 +23,13 @@ export default function VlessSettings() {
         setTimeout(() => setCopiedIndex(null), 1500);
     };
 
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    const handleCopyClick = () => {
+        handleCopy(`${site}/vless/${key}`, 0);
+        setOpenSnackbar(true);
+    };
+
     const getVlessApp = () => {
         const tg = window.Telegram.WebApp;
 
@@ -85,16 +92,18 @@ export default function VlessSettings() {
                     variant="outlined"
                     value={key}
                     placeholder={`${site}/vless/${key}`}
-                    InputProps={{
-                        readOnly: true,
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <IconButton onClick={handleCopyClick} edge="end">
-                                    <ContentCopyIcon />
-                                </IconButton>
-                            </InputAdornment>
+                    slotProps={{
+                        input: {
+                            readOnly: true,
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <IconButton onClick={handleCopyClick} edge="end">
+                                        <ContentCopyIcon />
+                                    </IconButton>
+                                </InputAdornment>
                         ),
                     }}
+                    }
                 />
                 <Button variant="contained" onClick={handleCopyClick}>
                     Копировать

@@ -242,7 +242,7 @@ function App() {
                 {/*</button>*/}
                 <p>{subscriptionInfo}</p>
             </header>
-            <main className="App">
+            <div className="App">
                 {/*<button onClick={() => getLinkRedirect(`${site}/connect/run`)}>*/}
                 {/*    Подключиться*/}
                 {/*</button>*/}
@@ -273,7 +273,7 @@ function App() {
                     show={showAlert}
                     onClose={() => setShowAlert(false)}
                 />
-            </main>
+            </div>
         </div>
     );
 }

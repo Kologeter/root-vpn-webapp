@@ -11,8 +11,7 @@ export default function VlessSettings() {
     const [key, setKey] = useState('');
 
     // Обеспечить, чтобы значение site корректно передавалось:
-    const site = import.meta.env.VITE_SITE || ''; // В случае использования Vite
-    // const site = process.env.REACT_APP_SITE || ''; // В случае Create React App
+    const site = process.env.SITE || ''; // В случае использования Vite
 
     const handleCopy = (link, index) => {
         navigator.clipboard.writeText(link);
@@ -77,6 +76,7 @@ export default function VlessSettings() {
                 <input
                     type="text"
                     placeholder={`${site}/vless/${key}`}
+                    readOnly
                     value={key}
                     onChange={(e) => setKey(e.target.value)}
                     className="flex-grow"
@@ -91,9 +91,10 @@ export default function VlessSettings() {
                 Установить приложение
             </button>
             <p className="font-semibold">Шаг 3. Подключитесь</p>
-            <img src={Platform} alt="инструкция" />
+            {Platform &&
+                (<img src={Platform} alt="инструкция" className="w-full object-contain"/>)}
             {Video && (
-                <video src={Platform} controls className="w-full">
+                <video src={Platform} controls className="absolute top-0 left-0 w-full h-full object-contain">
                     Ваш браузер не поддерживает видео.
                 </video>
             )}

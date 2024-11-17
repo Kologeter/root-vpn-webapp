@@ -31,7 +31,10 @@ export default function ProtocolPage() {
 
         });
 
-
+        tg.BackButton.show();
+        tg.BackButton.onClick(() =>{
+           navigate('/');
+        });
 
         tg.ready();
 
@@ -76,7 +79,6 @@ export default function ProtocolPage() {
             <p>Outline. Прост и легок в подключении. Однако расходует аккумулятор и легче заблокировать со стороны провайдера.</p>
             <p>VLESS. Есть возможность добавлять сайты, домены в исключения VPN. Есть роутинг. Сложнее заблокировать операторами связи.
                 Стоит использовать, если Outline не устраивает или не работает</p>
-
 
         </div>
     );

@@ -17,7 +17,7 @@ function App() {
     const [showAlert, setShowAlert] = useState(false); // состояние для отображения уведомления
     const [alertMessage, setAlertMessage] = useState(''); // сообщение для уведомления
     // const site = 'https://test.root-vpn.ru';
-    const site = process.env.REACT_APP_SITE;
+    const site = import.meta.env.VITE_SITE || '';
     const navigate = useNavigate();
 
     useEffect(() => {

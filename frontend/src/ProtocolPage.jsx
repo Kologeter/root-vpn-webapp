@@ -4,7 +4,7 @@ import axios from "axios";
 
 
 export default function ProtocolPage() {
-    const site = process.env.REACT_APP_SITE;
+    const site = import.meta.env.VITE_SITE || '';
     const navigate = useNavigate();
 
 

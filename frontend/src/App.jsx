@@ -16,7 +16,8 @@ function App() {
     const [hasSubscription, setHasSubscription] = useState(false); // Состояние для отслеживания наличия подписки
     const [showAlert, setShowAlert] = useState(false); // состояние для отображения уведомления
     const [alertMessage, setAlertMessage] = useState(''); // сообщение для уведомления
-    const site = 'https://test.root-vpn.ru';
+    // const site = 'https://test.root-vpn.ru';
+    const site = process.env.REACT_APP_SITE;
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -242,7 +243,7 @@ function App() {
                 {/*</button>*/}
                 <p>{subscriptionInfo}</p>
             </header>
-            <div className="App">
+            {/*<div className="App">*/}
                 {/*<button onClick={() => getLinkRedirect(`${site}/connect/run`)}>*/}
                 {/*    Подключиться*/}
                 {/*</button>*/}
@@ -273,7 +274,7 @@ function App() {
                     show={showAlert}
                     onClose={() => setShowAlert(false)}
                 />
-            </div>
+            {/*</div>*/}
         </div>
     );
 }

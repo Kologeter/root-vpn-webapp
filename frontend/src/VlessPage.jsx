@@ -11,7 +11,7 @@ export default function VlessSettings() {
     const [key, setKey] = useState('');
 
     // Обеспечить, чтобы значение site корректно передавалось:
-    const site = process.env.SITE || ''; // В случае использования Vite
+    const site = process.env.REACT_APP_SITE || ''; // В случае использования Vite
 
     const handleCopy = (link, index) => {
         navigator.clipboard.writeText(link);

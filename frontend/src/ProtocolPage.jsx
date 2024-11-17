@@ -1,6 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import axios from "axios";
+import {Box, Container, Typography} from "@mui/material";
 
 
 export default function ProtocolPage() {
@@ -76,12 +77,18 @@ export default function ProtocolPage() {
     };
 
     return (
-        <div className="container">
-            <h1>Выберите протокол VPN</h1>
-            <p>Outline. Прост и легок в подключении. Однако расходует аккумулятор и легче заблокировать со стороны провайдера.</p>
-            <p>VLESS. Есть возможность добавлять сайты, домены в исключения VPN. Есть роутинг. Сложнее заблокировать операторами связи.
-                Стоит использовать, если Outline не устраивает или не работает</p>
-
-        </div>
-    );
+        <Container maxWidth="md">
+            <Box sx={{ textAlign: 'center', marginTop: 4 }}>
+                <Typography variant="h4" component="h1" gutterBottom>
+                    Выберите протокол VPN
+                </Typography>
+                <Typography variant="body1" component="p" paragraph>
+                    <strong>Outline.</strong> Прост и легок в подключении. Однако расходует аккумулятор и легче заблокировать со стороны провайдера.
+                </Typography>
+                <Typography variant="body1" component="p" paragraph>
+                    <strong>VLESS.</strong> Есть возможность добавлять сайты, домены в исключения VPN. Есть роутинг. Сложнее заблокировать операторами связи.
+                    Стоит использовать, если Outline не устраивает или не работает.
+                </Typography>
+            </Box>
+        </Container>);
 }

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import finlandFlag from './assets/images/finland.jpg';
 import bulgariaFlag from './assets/images/Flag_of_Bulgaria.svg';
+// import PropTypes from 'prop-types';
 
 function CountryPage() {
     const navigate = useNavigate();
@@ -73,22 +74,26 @@ function CountryPage() {
         // { name: 'Финляндия (резерв)', flag: finlandFlag, code: 'no_ads_185' },
     ];
 
-    const CountryCard = ({ country, flag, onSelect }) => (
+    const CountryCard = ({ country, flag, infoServer, onSelect }) => (
         <div className="country-card">
             <button onClick={onSelect}>
-                <img src={flag} alt={country} className="flag-icon" />
-                {country}
+                <div className="country-info">
+                    <p>{infoServer}</p>
+                </div>
+                    <img src={flag} alt={country} className="flag-icon"/>
+                    {country}
             </button>
         </div>
-    );
+);
 
-    return (
+return (
         <div className="change-country-container">
             <div className="country-cards">
                 {countries.map((country) => (
                     <CountryCard
                         key={country.code}
                         country={country.name}
+                        infoServer={country.infoServer}
                         flag={country.flag}
                         onSelect={() => sendCountry(country.code)}
                     />

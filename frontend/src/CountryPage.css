@@ -1,83 +1,51 @@
-/*.change-country-container {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    height: 100vh;*/
-/*    background-color: #f0f8ff;*/
-/*}*/
-
-/* Для контейнера успеха */
-.success-container {
-    /*background-color: #e6ffed; !* Светло-зелёный фон *!*/
-    /*border: 1px solid #b2d8b2; !* Зелёная рамка *!*/
-    padding: 20px; /* Внутренние отступы */
-    border-radius: 10px; /* Скругление углов */
-    margin: 10px 0; /* Отступы сверху и снизу */
-    text-align: center; /* Центрирование текста */
+.change-country-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
 }
 
-/* Для заголовка успеха */
-.change-country-succes {
-    color: var(--tg-theme-button-text-color);
-    /*color: #28a745; !* Зелёный цвет текста *!*/
-    font-size: 24px; /* Размер текста */
-    font-weight: bold; /* Жирный шрифт */
+.country-cards {
+    display: flex;
+    gap: 15px;
 }
 
-/* Для контейнера ошибки */
-.error-container {
-    /*background-color: #ffe6e6; !* Светло-красный фон *!*/
-    /*border: 1px solid #d8b2b2; !* Красная рамка *!*/
-    padding: 20px; /* Внутренние отступы */
-    border-radius: 10px; /* Скругление углов */
-    margin: 10px 0; /* Отступы сверху и снизу */
-    text-align: center; /* Центрирование текста */
+.country-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Для заголовка ошибки */
-.change-country-error {
-    /*color: #dc3545; !* Красный цвет текста *!*/
-    color: var(--tg-theme-button-text-color);
-    font-size: 24px; /* Размер текста */
-    font-weight: bold; /* Жирный шрифт */
+.country-card button {
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    text-align: center;
 }
-/* Общие стили для всплывающих окон */
+
+.country-card .flag-icon {
+    width: 40px;
+    height: 30px;
+    margin-bottom: 5px;
+}
+
 .alert {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 15px 20px;
+    margin-top: 20px;
+    padding: 10px 15px;
     border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     color: white;
-    font-size: 16px;
     font-weight: bold;
-    z-index: 1000;
-    animation: fadeInOut 4s forwards;
 }
 
-/* Успешное сообщение */
 .alert-success {
-    background-color: #4CAF50; /* Зеленый цвет для успеха */
+    background-color: #4caf50;
 }
 
-/* Сообщение об ошибке */
 .alert-error {
-    background-color: #f44336; /* Красный цвет для ошибки */
-}
-
-/* Анимация появления и исчезновения */
-@keyframes fadeInOut {
-    0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-    10% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    90% { opacity: 1; transform: translateX(-50%) translateY(0); }
-    100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
-}
-
-.flag-icon {
-    width: 20px; /* Размер иконки */
-    height: auto;
-    margin-right: 10px; /* Отступ справа для отделения от текста */
-    vertical-align: middle; /* Выравнивание по середине текста */
+    background-color: #f44336;
 }

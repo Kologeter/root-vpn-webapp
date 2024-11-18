@@ -1,87 +1,106 @@
-// import React from 'react';
 import './CountryPage.css';
-// import PaymentAlert from "./PaymentAlert.jsx";
-import axios from "axios";
-import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import finlandFlag from './assets/images/finland.jpg';
 import bulgariaFlag from './assets/images/Flag_of_Bulgaria.svg';
 
 function CountryPage() {
     const navigate = useNavigate();
-    // const site = 'https://test.root-vpn.ru';
     const site = import.meta.env.VITE_SITE || '';
     const [isSuccess, setIsSuccess] = useState(null);
-    const [showAlert, setShowAlert] = useState(false);  // Для управления показом алерта
+    const [showAlert, setShowAlert] = useState(false);
     const [selectedCountry, setSelectedCountry] = useState('');
 
-    const sendCountry = (country) => {
-        const telegram = window.Telegram.WebApp;
-        const user = telegram.initDataUnsafe?.user;
+    const sendCountry = async (country) => {
+        try {
+            const telegram = window.Telegram?.WebApp;
+            const user = telegram?.initDataUnsafe?.user;
 
-        if (!user || !user.id) {
-            console.error('User or user ID is not available.');
-            return;
-        }
+            if (!user || !user.id) {
+                console.error('User or user ID is not available.');
+                return;
+            }
 
-        axios.post(`${site}/changecountry`, { 'user_id': user.id, 'country': country })
-            .then((response) => {
-                if (response.status === 200) {
-                    setIsSuccess(true);
-                    setShowAlert(true);  // Показать алерт
-                    setSelectedCountry(country);
-                } else {
-                    setIsSuccess(false);
-                    setShowAlert(true);  // Показать алерт
-                }
-            })
-            .catch((error) => {
-                console.error('Error:', error);
+            const response = await axios.post(`${site}/changecountry`, { user_id: user.id, country });
+            if (response.status === 200) {
+                setIsSuccess(true);
+                setShowAlert(true);
+                setSelectedCountry(country);
+            } else {
                 setIsSuccess(false);
-                setShowAlert(true);  // Показать алерт
-            });
+                setShowAlert(true);
+            }
+        } catch (error) {
+            console.error('Error sending country change request:', error);
+            setIsSuccess(false);
+            setShowAlert(true);
+        }
     };
 
     useEffect(() => {
-
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) {
+            console.error('Telegram WebApp is not available.');
+            return;
+        }
 
         tg.BackButton.show();
         tg.BackButton.onClick(() => {
             navigate('/');
         });
 
+        return () => {
+            tg.BackButton.hide();
+            tg.BackButton.offClick(); // Удаление обработчика
+        };
+    }, [navigate]);
 
+    useEffect(() => {
         if (showAlert) {
             const timer = setTimeout(() => {
                 setShowAlert(false);
-            }, 4000); // Длительность анимации 4 секунды
-            return () => clearTimeout(timer);  // Очистка таймера при размонтировании компонента
+            }, 4000);
+            return () => clearTimeout(timer);
         }
-    }, [showAlert, navigate]);
+    }, [showAlert]);
+
+    const countries = [
+        { name: 'Финляндия', infoServer: 'Быстрый, с высокой пропускной способностью сервер, расположенный ' +
+                'в Хельсинках. Отсутствует реклама на сайтах и приложениях. Рекомендуем', flag: finlandFlag, code: 'fast' },
+        { name: 'Болгария', infoServer: 'Сервер, кому важна конфидициальность. Отсутствует реклама на сайтах и приложениях.' +
+                ' Невысокая пропускная способность', flag: bulgariaFlag, code: 'no_ads' },
+        // { name: 'Финляндия (резерв)', flag: finlandFlag, code: 'no_ads_185' },
+    ];
+
+    const CountryCard = ({ country, flag, onSelect }) => (
+        <div className="country-card">
+            <button onClick={onSelect}>
+                <img src={flag} alt={country} className="flag-icon" />
+                {country}
+            </button>
+        </div>
+    );
 
     return (
         <div className="change-country-container">
-            <main className="Country-change-button">
-                <button onClick={() => sendCountry('fast')}>
-                    <img src={finlandFlag} alt="Финляндия" className="flag-icon"/>
-                    Финляндия
-                </button>
-                <button onClick={() => sendCountry('no_ads')}>
-                    <img src={bulgariaFlag} alt="Болгария" className="flag-icon"/>
-                    Болгария
-                </button>
-                <button onClick={() => sendCountry('no_ads_185')}>
-                    <img src={finlandFlag} alt="Финляндия" className="flag-icon"/>
-                    Финляндия (резерв)
-                </button>
-            </main>
+            <div className="country-cards">
+                {countries.map((country) => (
+                    <CountryCard
+                        key={country.code}
+                        country={country.name}
+                        flag={country.flag}
+                        onSelect={() => sendCountry(country.code)}
+                    />
+                ))}
+            </div>
 
-            {/* Рендеринг сообщения в зависимости от успешности запроса */}
             {showAlert && (
                 <div className={`alert ${isSuccess ? 'alert-success' : 'alert-error'}`}>
                     <span>
-                        {isSuccess ? `Ваша страна успешно изменена на ${selectedCountry}` : 'Ошибка при смене страны'}
+                        {isSuccess
+                            ? `Ваша страна успешно изменена на ${selectedCountry}`
+                            : 'Ошибка при смене страны'}
                     </span>
                 </div>
             )}
@@ -90,3 +109,4 @@ function CountryPage() {
 }
 
 export default CountryPage;
+

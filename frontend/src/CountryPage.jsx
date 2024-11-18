@@ -76,17 +76,17 @@ function CountryPage() {
 
     const CountryCard = ({ country, flag, infoServer, onSelect }) => (
         <div className="country-card">
+            <div className="country-info">
+                <p>{infoServer}</p>
+            </div>
             <button onClick={onSelect}>
-                <div className="country-info">
-                    <p>{infoServer}</p>
-                </div>
-                    <img src={flag} alt={country} className="flag-icon"/>
-                    {country}
+                <img src={flag} alt={country} className="flag-icon"/>
+                {country}
             </button>
         </div>
-);
+    );
 
-return (
+    return (
         <div className="change-country-container">
             <div className="country-cards">
                 {countries.map((country) => (

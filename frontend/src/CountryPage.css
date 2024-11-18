@@ -1,56 +1,5 @@
 .change-country-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
-}
-
-.country-cards {
-    display: flex;
-    gap: 15px;
-}
-
-.country-card {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-.country-card button {
-    background-color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    text-align: center;
-}
-
-.country-card .flag-icon {
-    width: 40px;
-    height: 30px;
-    margin-bottom: 5px;
-}
-
-.alert {
-    margin-top: 20px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    color: white;
-    font-weight: bold;
-}
-
-.alert-success {
-    background-color: #4caf50;
-}
-
-.alert-error {
-    background-color: #f44336;
-}
-.change-country-container {
-    display: flex;
     justify-content: center; /* Горизонтальное центрирование */
     align-items: center;    /* Вертикальное центрирование */
     height: 100vh;          /* Занять весь экран */
@@ -109,4 +58,21 @@ button {
     border: none;
     cursor: pointer;
     width: 100%;
+}
+
+
+.alert {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+
+.alert-success {
+    background-color: #4caf50;
+}
+
+.alert-error {
+    background-color: #f44336;
 }

@@ -100,7 +100,7 @@ export default function VlessSettings() {
                 Установить приложение
             </button>
             <p className="font-semibold">Шаг 3. Подключитесь</p>
-            <div>
+            <div className='container'>
             {!Video &&
                 (<img src={Platform} alt="инструкция"/>)}
             {Video && (

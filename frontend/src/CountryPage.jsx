@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import finlandFlag from './assets/images/finland.jpg';
 import bulgariaFlag from './assets/images/Flag_of_Bulgaria.svg';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 
 function CountryPage() {
     const navigate = useNavigate();
@@ -85,6 +85,13 @@ function CountryPage() {
             </button>
         </div>
     );
+
+    CountryCard.propTypes = {
+        country: PropTypes.string.isRequired,
+        flag: PropTypes.string.isRequired,
+        infoServer: PropTypes.string.isRequired, // Описание сервера
+        onSelect: PropTypes.func.isRequired,
+    };
 
     return (
         <div className="change-country-container">

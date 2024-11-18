@@ -45,3 +45,20 @@ button {
 button:hover {
     opacity: 0.8;
 }
+
+img {
+    margin: 10px 0;
+    box-sizing: border-box; /* Учитывать отступы в ширине */
+
+}
+
+image {
+    margin: 10px 0;
+    box-sizing: border-box;
+
+}
+
+video {
+    margin: 10px 0;
+    box-sizing: border-box;
+}

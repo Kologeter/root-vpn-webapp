@@ -46,14 +46,15 @@ button:hover {
     opacity: 0.8;
 }
 
-img {
-    margin: 10px 0;
-    box-sizing: border-box; /* Учитывать отступы в ширине */
+/*img {*/
+/*    margin: 10px 0;*/
+/*    box-sizing: border-box; !* Учитывать отступы в ширине *!*/
 
-}
+/*}*/
 
 .media {
     width: 100%;
     max-height: 400px;
     object-fit: contain; /* Сохраняет пропорции */
+    box-sizing: border-box;
 }

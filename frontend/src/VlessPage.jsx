@@ -9,6 +9,7 @@ export default function VlessSettings() {
     const [Video, setVideo] = useState(false);
     const [Platform, setPlatform] = useState('');
     const [key, setKey] = useState('');
+    const [width, setWidth] = useState(window.innerWidth);
 
     // Обеспечить, чтобы значение site корректно передавалось:
     const site = import.meta.env.VITE_SITE || '';
@@ -79,6 +80,14 @@ export default function VlessSettings() {
         setKey(user?.id || '');
     }, []);
 
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const maxWidth = width > 1024 ? 600 : width > 768 ? 400 : 300;
+
     return (
         <div className="space-y-2">
             <p className="font-semibold">Шаг 1. Скопируйте ваш ключ</p>
@@ -101,14 +110,22 @@ export default function VlessSettings() {
                 Установить приложение
             </button>
             <p className="font-semibold">Шаг 3. Подключитесь</p>
-            <div className='media-container'>
-            {!Video &&
-                (<img src={Platform} alt="инструкция" className='media'/>)}
-            {Video && (
-                <video src={Platform} controls className='media'>
-                    Ваш браузер не поддерживает видео.
-                </video>
-            )}
+            <div style={{ maxWidth: `${maxWidth}px`, margin: '0 auto' }}>
+                {!Video ? (
+                    <img
+                        src={Platform}
+                        alt="инструкция"
+                        style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }}
+                    />
+                ) : (
+                    <video
+                        src={Platform}
+                        controls
+                        style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }}
+                    >
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                )}
             </div>
         </div>
     );

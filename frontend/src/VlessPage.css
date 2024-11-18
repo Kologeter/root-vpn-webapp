@@ -52,9 +52,15 @@ button:hover {
 
 /*}*/
 
+.media-container {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
 .media {
     width: 100%;
     max-height: 400px;
-    object-fit: contain; /* Сохраняет пропорции */
+    object-fit: contain;
     box-sizing: border-box;
 }
+

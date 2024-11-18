@@ -101,11 +101,11 @@ export default function VlessSettings() {
                 Установить приложение
             </button>
             <p className="font-semibold">Шаг 3. Подключитесь</p>
-            <div className='container max-w-sm mx-auto'>
+            <div className='media-container'>
             {!Video &&
-                (<img src={Platform} alt="инструкция" className='w-full max-h-[400px] object-contain'/>)}
+                (<img src={Platform} alt="инструкция" className='media'/>)}
             {Video && (
-                <video src={Platform} controls className='w-full max-h-[400px] object-contain'>
+                <video src={Platform} controls className='media'>
                     Ваш браузер не поддерживает видео.
                 </video>
             )}

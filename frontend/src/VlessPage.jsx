@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
 import androidInstr from './assets/images/androidInstr.jpg';
-import iphoneGif from './assets/images/iphone.gif';
+// import iphoneGif from './assets/images/iphone.gif';
 import hiddfyMp4 from './assets/images/hiddfy.mp4';
 
 export default function VlessSettings() {
@@ -60,7 +60,8 @@ export default function VlessSettings() {
                 setPlatform(androidInstr);
                 break;
             case 'ios':
-                setPlatform(iphoneGif);
+                // setPlatform(iphoneGif);
+                setPlatform(androidInstr);
                 break;
             case 'tdesktop':
             case 'macos':

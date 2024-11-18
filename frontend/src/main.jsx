@@ -2,7 +2,7 @@ import ReactDOM from 'react-dom/client';
 import React from 'react';
 import MainRouter from './MainRouter';
 import './index.css';
-import CssBaseline from '@mui/material/CssBaseline';
+// import CssBaseline from '@mui/material/CssBaseline';
 // import ScopedCssBaseline from '@mui/material/ScopedCssBaseline';
 
 
@@ -12,7 +12,7 @@ root.render(
         {/*<ScopedCssBaseline>*/}
         {/*    <MainRouter />*/}
         {/*</ScopedCssBaseline>*/}
-        <CssBaseline />
+        {/*<CssBaseline />*/}
         <MainRouter />
     </React.StrictMode>
 );

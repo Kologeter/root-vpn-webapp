@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
+import {useNavigate} from "react-router-dom";
 import './App.css';
 import androidInstr from './assets/images/androidInstr.jpg';
-// import iphoneGif from './assets/images/iphone.gif';
+import iphoneGif from './assets/images/iphone.gif';
 import hiddfyMp4 from './assets/images/hiddfy.mp4';
 
 export default function VlessSettings() {
+    const navigate = useNavigate();
     const [copiedIndex, setCopiedIndex] = useState(null); // Включено состояние
     const [Video, setVideo] = useState(false);
     const [Platform, setPlatform] = useState('');
@@ -61,8 +63,8 @@ export default function VlessSettings() {
                 setPlatform(androidInstr);
                 break;
             case 'ios':
-                // setPlatform(iphoneGif);
-                setPlatform(androidInstr);
+                setPlatform(iphoneGif);
+                // setPlatform(androidInstr);
                 break;
             case 'tdesktop':
             case 'macos':
@@ -77,8 +79,21 @@ export default function VlessSettings() {
     useEffect(() => {
         const tg = window.Telegram.WebApp;
         const user = tg.initDataUnsafe?.user;
+
+        tg.BackButton.onClick(() => {
+            navigate('/protocol');
+        });
+
+        tg.SecondaryButton.hide();
+        tg.MainButton.setText('На главную');
+        tg.MainButton.onClick(() => {
+            tg.MainButton.setText('Подключиться');
+            navigate('/');
+        });
+
+
         setKey(user?.id || '');
-    }, []);
+    }, [navigate]);
 
     useEffect(() => {
         const handleResize = () => setWidth(window.innerWidth);

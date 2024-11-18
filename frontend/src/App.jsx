@@ -79,6 +79,8 @@ function App() {
                 setHasSubscription(false); // Устанавливаем, что подписка есть
             });
 
+        tg.BackButton.hide();
+
         tg.MainButton.setText("Подключиться");
         tg.MainButton.show();
 
@@ -93,7 +95,7 @@ function App() {
         return () => {
             socket.close(); // Закрываем WebSocket при размонтировании компонента
         };
-    }, []);
+    }, [site]);
 
     const goChooseProtcol = () => {
         navigate('/protocol');

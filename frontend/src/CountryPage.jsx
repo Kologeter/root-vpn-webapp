@@ -2,12 +2,15 @@
 import './CountryPage.css';
 // import PaymentAlert from "./PaymentAlert.jsx";
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 import {useEffect, useState} from "react";
 import finlandFlag from './assets/images/finland.jpg';
 import bulgariaFlag from './assets/images/Flag_of_Bulgaria.svg';
 
 function CountryPage() {
-    const site = 'https://test.root-vpn.ru';
+    const navigate = useNavigate();
+    // const site = 'https://test.root-vpn.ru';
+    const site = import.meta.env.VITE_SITE || '';
     const [isSuccess, setIsSuccess] = useState(null);
     const [showAlert, setShowAlert] = useState(false);  // Для управления показом алерта
     const [selectedCountry, setSelectedCountry] = useState('');
@@ -43,7 +46,10 @@ function CountryPage() {
 
         const tg = window.Telegram.WebApp;
 
-        tg.BackButton.isVisible();
+        tg.BackButton.show();
+        tg.BackButton.onClick(() => {
+            navigate('/');
+        });
 
 
         if (showAlert) {
@@ -52,7 +58,7 @@ function CountryPage() {
             }, 4000); // Длительность анимации 4 секунды
             return () => clearTimeout(timer);  // Очистка таймера при размонтировании компонента
         }
-    }, [showAlert]);
+    }, [showAlert, navigate]);
 
     return (
         <div className="change-country-container">

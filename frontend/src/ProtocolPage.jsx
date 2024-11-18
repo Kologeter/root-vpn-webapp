@@ -36,6 +36,7 @@ export default function ProtocolPage() {
 
         tg.BackButton.show();
         tg.BackButton.onClick(() => {
+            tg.MainButton.setText('Подключиться');
             navigate('/');
         });
 

@@ -75,14 +75,14 @@ function CountryPage() {
     ];
 
     const CountryCard = ({ country, flag, infoServer, onSelect }) => (
-        <div className="country-card">
+        <div className="country-card" onClick={onSelect}>
+            <div className="flag-container">
+                <img src={flag} alt={country} className="flag-icon" />
+            </div>
             <div className="country-info">
+                <h3>{country}</h3>
                 <p>{infoServer}</p>
             </div>
-            <button onClick={onSelect}>
-                <img src={flag} alt={country} className="flag-icon"/>
-                {country}
-            </button>
         </div>
     );
 

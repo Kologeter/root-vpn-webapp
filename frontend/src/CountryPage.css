@@ -16,13 +16,15 @@
 
 .country-card {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    align-items: center; /* Выравнивание по вертикали */
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    text-align: center;
+    text-align: left; /* Выравнивание текста */
+    padding: 10px 15px;
+    gap: 15px; /* Расстояние между флагом и текстом */
+    cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
 }
 
@@ -31,14 +33,21 @@
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
+.flag-container {
+    flex-shrink: 0; /* Не сжимать контейнер с флагом */
+}
+
+
 .flag-icon {
-    width: 100%;
-    height: 120px;
-    object-fit: cover;
+    width: 50px; /* Уменьшенный размер флага */
+    height: auto; /* Сохраняем пропорции */
+    border-radius: 4px; /* Немного скругляем углы */
 }
 
 .country-info {
-    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Центрирование текста по вертикали */
 }
 
 .country-info h3 {

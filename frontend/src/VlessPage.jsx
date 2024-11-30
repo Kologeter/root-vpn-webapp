@@ -11,7 +11,7 @@ export default function VlessSettings() {
     const [copiedIndex, setCopiedIndex] = useState(null); // Включено состояние
     const [Video, setVideo] = useState(false);
     const [Platform, setPlatform] = useState('');
-    const [key, setKey] = useState('');
+    // const [key, setKey] = useState('');
     const [width, setWidth] = useState(window.innerWidth);
     const [LinkVless, setLinkVless] = useState('');
 
@@ -33,31 +33,43 @@ export default function VlessSettings() {
     //     setOpenSnackbar(true);
     // };
     useEffect(() => {
-        const telegram = window.Telegram?.WebApp;
-        const user = telegram?.initDataUnsafe?.user; // Данные пользователя
-        const initData = telegram?.initData;
-        const hash = new URLSearchParams(initData).get('hash');
+        const fetchData = async () => {
+            const telegram = window.Telegram?.WebApp;
+            const user = telegram?.initDataUnsafe?.user; // Данные пользователя
+            const initData = telegram?.initData;
+            const hash = new URLSearchParams(initData).get('hash');
 
-        if (!initData || !hash) {
-            console.error('Missing initData or hash.');
-            return;
-        }
+            if (!initData || !hash) {
+                console.error('Missing initData or hash.');
+                return;
+            }
 
-        const response = axios.get(`${site}/getvless/${user.id}`, {
-            params: {
-                initData,
-                hash,
-            },
-        });
-        console.log('response ', response)
-        console.log('response.status ', response.status)
-        if (response.status === 200) {
-            const vlessLink = response.data?.vless_link;
-            console.log('VLESS Link:', vlessLink);
-            setLinkVless(vlessLink)
-        } else {
-            console.error('Error from server:', response.status, response.data);
-        }
+            console.log('initData:', initData);
+            console.log('hash:', hash);
+
+            try {
+                const response = await axios.get(`${site}/getvless/${user.id}`, {
+                    params: {
+                        initData,
+                        hash,
+                    },
+                });
+                console.log('response ', response);
+                console.log('response.status ', response.status);
+
+                if (response.status === 200) {
+                    const vlessLink = response.data?.vless_link;
+                    console.log('VLESS Link:', vlessLink);
+                    setLinkVless(vlessLink);
+                } else {
+                    console.error('Error from server:', response.status, response.data);
+                }
+            } catch (error) {
+                console.error('Request failed:', error.response?.status, error.response?.data || error.message);
+            }
+        };
+
+        fetchData();
     }, [site]);
 
 
@@ -108,7 +120,7 @@ export default function VlessSettings() {
 
     useEffect(() => {
         const tg = window.Telegram.WebApp;
-        const user = tg.initDataUnsafe?.user;
+        // const user = tg.initDataUnsafe?.user;
 
         tg.BackButton.onClick(() => {
             navigate('/protocol');
@@ -122,7 +134,7 @@ export default function VlessSettings() {
         });
 
 
-        setKey(user?.id || '');
+        // setKey(user?.id || '');
     }, [navigate]);
 
     useEffect(() => {
@@ -139,10 +151,10 @@ export default function VlessSettings() {
             <div className="flex space-x-2">
                 <input
                     type="text"
-                    placeholder={LinkVless}
+                    placeholder="VLESS Link will appear here"
                     readOnly
-                    value={LinkVless}
-                    onChange={(e) => setKey(e.target.value)}
+                    value={LinkVless} // Используем состояние как значение
+                    onChange={(e) => setLinkVless(e.target.value)} // Это не обязательно для readOnly
                     className="flex-grow"
                 />
                 <button onClick={() => handleCopy(LinkVless, 0)} className="shrink-0">

@@ -1,18 +1,12 @@
-#networks:
-#  anastasi_nails_default:
-#    external: True
+
 
 services:
-#  backend:
-#    build:
-#      context: ./backend
-#    networks:
-#      - dev
-
   frontend-test-test:
     build:
       context: ./frontend
     restart: always
+    env_file:
+      - .env.dev
     ports:
       - '3150:3150'
 #    networks:

@@ -4,6 +4,7 @@ import './App.css';
 import androidInstr from './assets/images/androidInstr.jpg';
 import iphoneGif from './assets/images/iphone.gif';
 import hiddfyMp4 from './assets/images/hiddfy.mp4';
+import axios from "axios";
 
 export default function VlessSettings() {
     const navigate = useNavigate();
@@ -12,6 +13,7 @@ export default function VlessSettings() {
     const [Platform, setPlatform] = useState('');
     const [key, setKey] = useState('');
     const [width, setWidth] = useState(window.innerWidth);
+    const [LinkVless, setLinkVless] = useState('');
 
     // Обеспечить, чтобы значение site корректно передавалось:
     const site = import.meta.env.VITE_SITE || '';
@@ -30,6 +32,32 @@ export default function VlessSettings() {
     //     handleCopy(`${site}/vless/${key}`, 0);
     //     setOpenSnackbar(true);
     // };
+    useEffect(() => {
+        const telegram = window.Telegram?.WebApp;
+        const user = telegram?.initDataUnsafe?.user; // Данные пользователя
+        const initData = telegram?.initData;
+        const hash = new URLSearchParams(initData).get('hash');
+
+        if (!initData || !hash) {
+            console.error('Missing initData or hash.');
+            return;
+        }
+
+        const response = axios.get(`${site}/getvless/${user.id}`, {
+            params: {
+                initData,
+                hash,
+            },
+        });
+        if (response.status === 200) {
+            const vlessLink = response.data?.vless_link;
+            console.log('VLESS Link:', vlessLink);
+            setLinkVless(vlessLink)
+        } else {
+            console.error('Error from server:', response.status, response.data);
+        }
+    }, [site]);
+
 
     const getVlessApp = () => {
         const tg = window.Telegram.WebApp;
@@ -109,13 +137,13 @@ export default function VlessSettings() {
             <div className="flex space-x-2">
                 <input
                     type="text"
-                    placeholder={`${site}/vless/${key}`}
+                    placeholder={LinkVless}
                     readOnly
-                    value={`${site}/vless/${key}`}
+                    value={LinkVless}
                     onChange={(e) => setKey(e.target.value)}
                     className="flex-grow"
                 />
-                <button onClick={() => handleCopy(`${site}/vless/${key}`, 0)} className="shrink-0">
+                <button onClick={() => handleCopy(LinkVless, 0)} className="shrink-0">
                     Копировать
                 </button>
             </div>

@@ -9,5 +9,3 @@ services:
       - .env.dev
     ports:
       - '3150:3150'
-#    networks:
-#      - anastasi_nails_default

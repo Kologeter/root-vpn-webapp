@@ -49,6 +49,8 @@ export default function VlessSettings() {
                 hash,
             },
         });
+        console.log('response ', response)
+        console.log('response.status ', response.status)
         if (response.status === 200) {
             const vlessLink = response.data?.vless_link;
             console.log('VLESS Link:', vlessLink);

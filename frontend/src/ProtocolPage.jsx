@@ -16,20 +16,22 @@ export default function ProtocolPage() {
 
         // const user = tg.initDataUnsafe?.user;
 
-        tg.MainButton.setText("Outline");
+        tg.MainButton.setText("VLESS");
+        tg.MainButton.hasShineEffect();
         tg.MainButton.show();
 
-        tg.SecondaryButton.setText('VLESS');
+        tg.SecondaryButton.setText('Outline');
+        // tg.SecondaryButton.hasShineEffect();
         tg.SecondaryButton.show();
 
-        tg.MainButton.onClick(() => {
+        tg.SecondaryButton.onClick(() => {
             console.log("Подключение к Outline VPN");
             // navigate('/outline')
             getLinkRedirectOutline(`${site}/connect/run`);
         });
 
         tg.SecondaryButton.onClick(() => {
-            console.log('Подключение к VLESS')
+            console.log('Подключение к VLESS');
             navigate('/vless');
 
         });

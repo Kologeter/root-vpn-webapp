@@ -151,7 +151,7 @@ export default function VlessSettings() {
             <div className="flex space-x-2">
                 <input
                     type="text"
-                    placeholder="VLESS Link will appear here"
+                    placeholder="VLESS Link"
                     readOnly
                     value={LinkVless} // Используем состояние как значение
                     onChange={(e) => setLinkVless(e.target.value)} // Это не обязательно для readOnly

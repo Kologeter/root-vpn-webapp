@@ -26,20 +26,25 @@ function App() {
             setUserName(user.first_name); // Устанавливаем имя пользователя
         }
 
-        const socket = new WebSocket(`wss://test.root-vpn.ru/ws`);
+        const socket = new WebSocket(`wss://${site}/ws`);
+        // const socket = new WebSocket("ws://127.0.0.1:2530/ws");
 
-        socket.onmessage = (event) => {
+        socket.onmessage = function(event) {
             const message = event.data;
             console.log("Message from server:", message);
 
+            // Обновление информации о подписке на основе сообщения от WebSocket
             if (message === "Payment received!") {
-                setAlertMessage('Платеж успешно выполнен!');
-                setShowAlert(true);
+                // setSubscriptionInfo('Спасибо за оплату! Ваша подписка активирована.');
+                setAlertMessage('Платеж успешно выполнен!'); // устанавливаем сообщение для уведомления
+                setShowAlert(true); // показываем уведомление
+                // tg.showAlert('Тест')
+                // tg.openLink(`${site}/success`)
                 setHasSubscription(true);
             }
         };
 
-        socket.onclose = () => {
+        socket.onclose = function() {
             console.log("WebSocket connection closed");
         };
 
@@ -69,7 +74,7 @@ function App() {
         tg.MainButton.show();
         tg.MainButton.onClick(() => {
             console.log("Подключение к VPN");
-            goChooseProtcol();
+            navigate('/protocol');
         });
 
         tg.ready();
@@ -77,7 +82,7 @@ function App() {
         return () => {
             socket.close(); // Закрываем WebSocket при размонтировании компонента
         };
-    }, [site]);
+    }, [navigate, site]);
 
     const handleSubscriptionError = (error) => {
         if (error === 'User is inactive') {
@@ -88,10 +93,6 @@ function App() {
             setSubscriptionInfo('У вас нет активных подписок');
         }
         setHasSubscription(false);
-    };
-
-    const goChooseProtcol = () => {
-        navigate('/protocol');
     };
 
     const download_app = () => {
@@ -106,6 +107,10 @@ function App() {
         };
         const link = platformLinks[tg.platform] || platformLinks.default;
         tg.openLink(link);
+    };
+
+    const goChooseProtcol = () => {
+        navigate('/protocol');
     };
 
     const goToCountryPage = () => {

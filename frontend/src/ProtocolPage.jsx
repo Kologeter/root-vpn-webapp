@@ -63,6 +63,7 @@ export default function ProtocolPage() {
 
         // Настраиваем MainButton
         tg.MainButton.setText("VLESS");
+        tg.MainButton.position('left')
         tg.MainButton.show();
         // tg.MainButton.hasShineEffect();
 
@@ -71,9 +72,9 @@ export default function ProtocolPage() {
             navigate("/vless");
         });
 
-        tg.secondaryButton.setText('Outline');
-        tg.secondaryButton.show();
-        tg.secondaryButton.onClick(() => {
+        tg.SecondaryButton.setText('Outline');
+        tg.SecondaryButton.show();
+        tg.SecondaryButton.onClick(() => {
             console.log("Подключение к Outline VPN");
             getLinkRedirectOutline(`${site}/connect/run`);
         });

@@ -63,7 +63,7 @@ export default function ProtocolPage() {
 
         // Настраиваем MainButton
         tg.MainButton.setText("VLESS");
-        tg.MainButton.position('left')
+        // tg.MainButton.position('left')
         tg.MainButton.show();
         // tg.MainButton.hasShineEffect();
 

@@ -58,6 +58,7 @@ export default function ProtocolPage() {
         //         textColor: '#ffffff'
         //     });
         //
+        tg.secondaryButton.setText('Outline');
         tg.secondaryButton.onClick(() => {
             console.log("Подключение к Outline VPN");
             getLinkRedirectOutline(`${site}/connect/run`);

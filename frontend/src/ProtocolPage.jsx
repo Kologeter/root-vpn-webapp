@@ -22,7 +22,7 @@ export default function ProtocolPage() {
         tg.MainButton.setText("VLESS");
         // tg.MainButton.position('left')
         tg.MainButton.show();
-        tg.MainButton.hasShineEffect();
+        // tg.MainButton.hasShineEffect();
 
         tg.MainButton.onClick(() => {
             console.log("Подключение к VLESS");

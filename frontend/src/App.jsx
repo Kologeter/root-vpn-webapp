@@ -21,6 +21,7 @@ function App() {
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
+        console.log("Telegram WebApp API Version:", window.Telegram?.WebApp?.version);
         if (!tg) {
             console.error("Telegram WebApp не найден");
             return;

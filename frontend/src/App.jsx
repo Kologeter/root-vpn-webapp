@@ -16,36 +16,39 @@ function App() {
     const [showAlert, setShowAlert] = useState(false); // Состояние уведомления
     const [alertMessage, setAlertMessage] = useState(''); // Сообщение для уведомления
     const site = import.meta.env.VITE_SITE || ''; // URL сайта из переменных окружения
+    const websocket = import.meta.env.VITE_WEBSOCKET || '';
     const navigate = useNavigate();
 
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
-        const user = tg.initDataUnsafe?.user;
-
-        if (user) {
-            setUserName(user.first_name); // Устанавливаем имя пользователя
+        const tg = window.Telegram?.WebApp;
+        if (!tg) {
+            console.error("Telegram WebApp не найден");
+            return;
         }
 
-        const socket = new WebSocket(`wss://${site}/ws`);
-        // const socket = new WebSocket("ws://127.0.0.1:2530/ws");
+        const user = tg.initDataUnsafe?.user;
+        if (user) {
+            setUserName(user.first_name);
+        }
 
-        socket.onmessage = function(event) {
+        const socket = new WebSocket(`${websocket}/ws`);
+        socket.onmessage = function (event) {
             const message = event.data;
             console.log("Message from server:", message);
 
-            // Обновление информации о подписке на основе сообщения от WebSocket
             if (message === "Payment received!") {
-                // setSubscriptionInfo('Спасибо за оплату! Ваша подписка активирована.');
-                setAlertMessage('Платеж успешно выполнен!'); // устанавливаем сообщение для уведомления
-                setShowAlert(true); // показываем уведомление
-                // tg.showAlert('Тест')
-                // tg.openLink(`${site}/success`)
+                setAlertMessage("Платеж успешно выполнен!");
+                setShowAlert(true);
                 setHasSubscription(true);
             }
         };
 
-        socket.onclose = function() {
+        socket.onclose = function () {
             console.log("WebSocket connection closed");
+        };
+
+        socket.onerror = function (error) {
+            console.error("Ошибка WebSocket:", error);
         };
 
         axios.post(`${site}/check/subscription`, {
@@ -55,7 +58,6 @@ function App() {
         })
             .then((response) => {
                 const { status, subscription } = response.data;
-
                 if (status === 'success') {
                     setSubscriptionInfo(`Ваша подписка активна до ${subscription}`);
                     setHasSubscription(true);
@@ -64,8 +66,8 @@ function App() {
                 }
             })
             .catch((error) => {
-                console.error('Ошибка при получении информации о подписке:', error);
-                setSubscriptionInfo('У вас нет активных подписок');
+                console.error("Ошибка при получении информации о подписке:", error);
+                setSubscriptionInfo("У вас нет активных подписок");
                 setHasSubscription(false);
             });
 
@@ -74,15 +76,16 @@ function App() {
         tg.MainButton.show();
         tg.MainButton.onClick(() => {
             console.log("Подключение к VPN");
-            navigate('/protocol');
+            navigate("/protocol");
         });
 
         tg.ready();
 
         return () => {
-            socket.close(); // Закрываем WebSocket при размонтировании компонента
+            socket.close();
         };
-    }, [navigate, site]);
+    }, [navigate, websocket]);
+
 
     const handleSubscriptionError = (error) => {
         if (error === 'User is inactive') {

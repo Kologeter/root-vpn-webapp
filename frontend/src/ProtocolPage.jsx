@@ -18,54 +18,11 @@ export default function ProtocolPage() {
             return;
         }
 
-        // Монтируем mainButton, если доступен
-        // if (mainButton?.mount?.isAvailable?.()) {
-        //     mainButton.mount();
-        //     console.log("mainButton mounted:", mainButton.isMounted?.());
-        // }
-        //
-        // // Устанавливаем параметры mainButton, если доступно
-        // if (mainButton?.setParams?.isAvailable?.()) {
-        //     mainButton.setParams({
-        //         backgroundColor: "#000000",
-        //         hasShineEffect: true,
-        //         isEnabled: true,
-        //         isLoaderVisible: true,
-        //         isVisible: true,
-        //         text: "VLESS",
-        //         textColor: "#ffffff",
-        //     });
-        //     console.log("mainButton state:", mainButton.state?.());
-        // }
-
-        // mainButton
-
-        // Настраиваем SecondaryButton, если он существует
-        // if (secondaryButton.mount.isAvailable()) {
-        //     secondaryButton.mount();
-        //     secondaryButton.isMounted(); // true
-        // }
-        //
-        // if (secondaryButton.setParams.isAvailable()) {
-        //     secondaryButton.setParams({
-        //         backgroundColor: '#000000',
-        //         hasShineEffect: true,
-        //         isEnabled: true,
-        //         isLoaderVisible: true,
-        //         isVisible: true,
-        //         position: 'left',
-        //         text: 'Outline',
-        //         textColor: '#ffffff'
-        //     });
-        //
-
-        // }
-
         // Настраиваем MainButton
         tg.MainButton.setText("VLESS");
         // tg.MainButton.position('left')
         tg.MainButton.show();
-        // tg.MainButton.hasShineEffect();
+        tg.MainButton.hasShineEffect();
 
         tg.MainButton.onClick(() => {
             console.log("Подключение к VLESS");

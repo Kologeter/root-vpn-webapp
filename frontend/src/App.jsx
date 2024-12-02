@@ -73,6 +73,9 @@ function App() {
             });
 
         tg.BackButton?.hide();
+
+        tg.SecondaryButton?.hide();
+
         tg.MainButton.setText("Подключиться");
         tg.MainButton.show();
         tg.MainButton.onClick(() => {
@@ -99,27 +102,27 @@ function App() {
         setHasSubscription(false);
     };
 
-    const download_app = () => {
-        const tg = window.Telegram.WebApp;
-        const platformLinks = {
-            ios: 'https://apps.apple.com/us/app/outline-app/id1356177741',
-            android: 'https://play.google.com/store/apps/details?id=org.outline.android.client',
-            web: 'https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe',
-            macos: 'https://itunes.apple.com/us/app/outline-app/id1356178125',
-            tdesktop: 'https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe',
-            default: 'https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe'
-        };
-        const link = platformLinks[tg.platform] || platformLinks.default;
-        tg.openLink(link);
-    };
+    // const download_app = () => {
+    //     const tg = window.Telegram.WebApp;
+    //     const platformLinks = {
+    //         ios: 'https://apps.apple.com/us/app/outline-app/id1356177741',
+    //         android: 'https://play.google.com/store/apps/details?id=org.outline.android.client',
+    //         web: 'https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe',
+    //         macos: 'https://itunes.apple.com/us/app/outline-app/id1356178125',
+    //         tdesktop: 'https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe',
+    //         default: 'https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe'
+    //     };
+    //     const link = platformLinks[tg.platform] || platformLinks.default;
+    //     tg.openLink(link);
+    // };
 
     const goChooseProtcol = () => {
         navigate('/protocol');
     };
 
-    // const goToCountryPage = () => {
-    //     navigate('/country');
-    // };
+    const goToDownloadApp = () => {
+        navigate('/downloadapp');
+    };
 
     const getTechSupport = () => {
         const tg = window.Telegram.WebApp;
@@ -181,7 +184,7 @@ function App() {
             <button onClick={() => goChooseProtcol()}>Подключиться</button>
             {!hasSubscription && <button onClick={buySubscription}>Купить подписку</button>}
             {/*<button onClick={goToCountryPage}>Сменить страну</button>*/}
-            <button onClick={download_app}>Скачать приложение</button>
+            <button onClick={goToDownloadApp}>Скачать приложение</button>
             <button onClick={getTechSupport}>Техподдержка</button>
             {hasSubscription && <button onClick={stopSubscription}>Остановить подписку</button>}
             <PaymentAlert message={alertMessage} show={showAlert} onClose={() => setShowAlert(false)} />

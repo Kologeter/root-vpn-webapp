@@ -74,7 +74,6 @@ function App() {
 
         tg.BackButton.hide();
         tg.MainButton.setText("Подключиться");
-        tg.MainButton.hasShineEffect();
         tg.MainButton.show();
         tg.MainButton.onClick(() => {
             console.log("Подключение к VPN");

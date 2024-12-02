@@ -58,22 +58,24 @@ export default function ProtocolPage() {
         //         textColor: '#ffffff'
         //     });
         //
-        tg.secondaryButton.setText('Outline');
-        tg.secondaryButton.onClick(() => {
-            console.log("Подключение к Outline VPN");
-            getLinkRedirectOutline(`${site}/connect/run`);
-        });
-        tg.secondaryButton.show();
+
         // }
 
         // Настраиваем MainButton
         tg.MainButton.setText("VLESS");
-        tg.MainButton.hasShineEffect(true);
         tg.MainButton.show();
+        tg.MainButton.hasShineEffect(true);
 
         tg.MainButton.onClick(() => {
             console.log("Подключение к VLESS");
             navigate("/vless");
+        });
+
+        tg.secondaryButton.setText('Outline');
+        tg.secondaryButton.show();
+        tg.secondaryButton.onClick(() => {
+            console.log("Подключение к Outline VPN");
+            getLinkRedirectOutline(`${site}/connect/run`);
         });
 
 

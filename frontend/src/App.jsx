@@ -72,7 +72,7 @@ function App() {
                 setHasSubscription(false);
             });
 
-        tg.BackButton.hide();
+        tg.BackButton?.hide();
         tg.MainButton.setText("Подключиться");
         tg.MainButton.show();
         tg.MainButton.onClick(() => {
@@ -117,9 +117,9 @@ function App() {
         navigate('/protocol');
     };
 
-    const goToCountryPage = () => {
-        navigate('/country');
-    };
+    // const goToCountryPage = () => {
+    //     navigate('/country');
+    // };
 
     const getTechSupport = () => {
         const tg = window.Telegram.WebApp;
@@ -180,7 +180,7 @@ function App() {
             </header>
             <button onClick={() => goChooseProtcol()}>Подключиться</button>
             {!hasSubscription && <button onClick={buySubscription}>Купить подписку</button>}
-            <button onClick={goToCountryPage}>Сменить страну</button>
+            {/*<button onClick={goToCountryPage}>Сменить страну</button>*/}
             <button onClick={download_app}>Скачать приложение</button>
             <button onClick={getTechSupport}>Техподдержка</button>
             {hasSubscription && <button onClick={stopSubscription}>Остановить подписку</button>}

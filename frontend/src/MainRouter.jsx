@@ -5,6 +5,7 @@ import SuccessPage from './SuccessPage';
 import CountryPage from "./CountryPage.jsx";
 import VlessSettings from "./VlessPage.jsx";
 import ProtocolPage from "./ProtocolPage.jsx";
+import DownloadLinks from "./DownloadLinks.jsx";
 
 
 function MainRouter() {
@@ -15,9 +16,8 @@ function MainRouter() {
                 <Route path="/success" element={<SuccessPage />} />
                 <Route path="/country" element={<CountryPage />} />
                 <Route path='/protocol' element={<ProtocolPage />} />
-                {/*<Route path='/protocol' element={<ProtocolPage />} />*/}
                 <Route path='/vless' element={<VlessSettings />}/>
-                {/*<Route path='/outline' element={<VlessSettings />}/>*/}
+                <Route path='/downloadapp' element={<DownloadLinks />} />
             </Routes>
         </Router>
     );

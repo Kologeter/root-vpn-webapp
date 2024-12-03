@@ -54,7 +54,7 @@ function App() {
 
         axios.post(`${site}/check/subscription`, {
             user_id: user?.id?.toString(),
-            username: user?.username ?? null,
+            username: user?.username.toString() ?? null,
             first_name: user?.first_name
         })
             .then((response) => {

@@ -146,27 +146,27 @@ export default function VlessSettings() {
     const maxWidth = width > 1024 ? 600 : width > 768 ? 400 : 300;
 
     return (
-        <div className="space-y-2">
-            <p className="font-semibold">Шаг 1. Скопируйте ваш ключ</p>
-            <div className="flex space-x-2">
+        <div className="steps-container">
+            <p className="step-title">Шаг 1. Скопируйте ваш ключ</p>
+            <div className="input-group">
                 <input
                     type="text"
                     placeholder="VLESS Link"
                     readOnly
                     value={LinkVless} // Используем состояние как значение
                     onChange={(e) => setLinkVless(e.target.value)} // Это не обязательно для readOnly
-                    className="flex-grow"
+                    className="input-field"
                 />
-                <button onClick={() => handleCopy(LinkVless, 0)} className="shrink-0">
+                <button onClick={() => handleCopy(LinkVless, 0)} className="btn-primary">
                     Копировать
                 </button>
             </div>
-            {copiedIndex !== null && <p className="text-green-500">Скопировано!</p>}
-            <p className="font-semibold">Шаг 2. Установите приложение</p>
+            {copiedIndex !== null && <p className="success-message">Скопировано!</p>}
+            <p className="step-title">Шаг 2. Установите приложение</p>
             <button onClick={getVlessApp} className="btn-primary">
                 Установить приложение
             </button>
-            <p className="font-semibold">Шаг 3. Подключитесь</p>
+            <p className="step-title">Шаг 3. Подключитесь</p>
             <div style={{ maxWidth: `${maxWidth}px`, margin: '0 auto' }}>
                 {!Video ? (
                     <img

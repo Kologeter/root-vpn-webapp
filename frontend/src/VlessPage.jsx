@@ -52,6 +52,10 @@ export default function VlessSettings() {
                     params: {
                         initData,
                         hash,
+                    // user_id: user.id,
+                    // initData: initData,
+                    // hash: hash,
+
                     },
                 });
                 console.log('response ', response);
@@ -158,7 +162,7 @@ export default function VlessSettings() {
                     className="input-field"
                 />
                 <button onClick={() => handleCopy(LinkVless, 0)} className="btn-primary">
-                    Копировать
+                    Копировать ключ
                 </button>
             </div>
             {copiedIndex !== null && <p className="success-message">Скопировано!</p>}

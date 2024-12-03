@@ -5,7 +5,7 @@ import duckAnimation from './assets/AnimatedSticker.json';
 import axios from 'axios';
 import './App.css';
 import { useNavigate } from 'react-router-dom';
-import PaymentAlert from "./PaymentAlert.jsx";
+// import PaymentAlert from "./PaymentAlert.jsx";
 
 // import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 
@@ -13,10 +13,10 @@ function App() {
     const [userName, setUserName] = useState(''); // Хранение имени пользователя
     const [subscriptionInfo, setSubscriptionInfo] = useState(''); // Информация о подписке
     const [hasSubscription, setHasSubscription] = useState(false); // Отслеживание наличия подписки
-    const [showAlert, setShowAlert] = useState(false); // Состояние уведомления
-    const [alertMessage, setAlertMessage] = useState(''); // Сообщение для уведомления
+    // const [showAlert, setShowAlert] = useState(false); // Состояние уведомления
+    // const [alertMessage, setAlertMessage] = useState(''); // Сообщение для уведомления
     const site = import.meta.env.VITE_SITE || ''; // URL сайта из переменных окружения
-    const websocket = import.meta.env.VITE_WEBSOCKET || '';
+    // const websocket = import.meta.env.VITE_WEBSOCKET || '';
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -32,29 +32,29 @@ function App() {
             setUserName(user.first_name);
         }
 
-        const socket = new WebSocket(`${websocket}/ws`);
-        socket.onmessage = function (event) {
-            const message = event.data;
-            console.log("Message from server:", message);
-
-            if (message === "Payment received!") {
-                setAlertMessage("Платеж успешно выполнен!");
-                setShowAlert(true);
-                setHasSubscription(true);
-            }
-        };
-
-        socket.onclose = function () {
-            console.log("WebSocket connection closed");
-        };
-
-        socket.onerror = function (error) {
-            console.error("Ошибка WebSocket:", error);
-        };
+        // const socket = new WebSocket(`${websocket}/ws`);
+        // socket.onmessage = function (event) {
+        //     const message = event.data;
+        //     console.log("Message from server:", message);
+        //
+        //     if (message === "Payment received!") {
+        //         setAlertMessage("Платеж успешно выполнен!");
+        //         setShowAlert(true);
+        //         setHasSubscription(true);
+        //     }
+        // };
+        //
+        // socket.onclose = function () {
+        //     console.log("WebSocket connection closed");
+        // };
+        //
+        // socket.onerror = function (error) {
+        //     console.error("Ошибка WebSocket:", error);
+        // };
 
         axios.post(`${site}/check/subscription`, {
             user_id: user?.id?.toString(),
-            username: user?.username,
+            username: user?.username ?? null,
             first_name: user?.first_name
         })
             .then((response) => {
@@ -85,10 +85,10 @@ function App() {
 
         tg.ready();
 
-        return () => {
-            socket.close();
-        };
-    }, [navigate, websocket]);
+        // return () => {
+        //     socket.close();
+        // };
+    }, [navigate]);
 
 
     const handleSubscriptionError = (error) => {
@@ -187,7 +187,7 @@ function App() {
             <button onClick={goToDownloadApp}>Скачать приложение</button>
             <button onClick={getTechSupport}>Техподдержка</button>
             {hasSubscription && <button onClick={stopSubscription}>Остановить подписку</button>}
-            <PaymentAlert message={alertMessage} show={showAlert} onClose={() => setShowAlert(false)} />
+            {/*<PaymentAlert message={alertMessage} show={showAlert} onClose={() => setShowAlert(false)} />*/}
         </div>
     );
 }

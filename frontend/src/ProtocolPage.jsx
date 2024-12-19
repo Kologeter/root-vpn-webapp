@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { Shield, Zap } from 'lucide-react';
 
 
 
@@ -81,18 +82,44 @@ export default function ProtocolPage() {
     };
 
     return (
-        <div className="container">
-            <h1>Выберите протокол VPN</h1>
-            <p>
-                VLESS reality (tcp). Это современный протокол особенностью которого является маскировка
-                под обычный интернет трафик. Из-за данной особенности его сложнее заблокировать.
-                Есть возможность добавлять сайты, домены в исключения VPN. Есть роутинг.
-                Сложнее заблокировать операторами связи. Рекомендуем использовать данный протокол.
-            </p>
-            <p>
-                Outline. Прост и легок в подключении. Однако расходует аккумулятор, легче заблокировать операторами связи.
-                Рекомендуем использовать его как запасной вариант подключения
-            </p>
+        <div className="container mx-auto px-4 py-8">
+            <h1 className="text-3xl font-bold mb-6 text-center">Выберите протокол VPN</h1>
+            <div className="grid md:grid-cols-2 gap-8">
+                <div className="bg-white rounded-lg shadow-md p-6">
+                    <div className="flex items-center mb-4">
+                        <Zap className="w-8 h-8 text-blue-500 mr-2"/>
+                        <h2 className="text-xl font-semibold">VLESS reality (tcp)</h2>
+                    </div>
+                    <div className="space-y-4">
+                        <p>
+                            Это современный протокол, особенностью которого является маскировка
+                            под обычный интернет трафик. Из-за данной особенности его сложнее заблокировать.
+                        </p>
+                        <p>
+                            Есть возможность добавлять сайты, домены в исключения VPN. Есть роутинг.
+                            Сложнее заблокировать операторами связи.
+                        </p>
+                        <p className="font-semibold">
+                            Рекомендуем использовать данный протокол.
+                        </p>
+                    </div>
+                </div>
+                <div className="bg-white rounded-lg shadow-md p-6">
+                    <div className="flex items-center mb-4">
+                        <Shield className="w-8 h-8 text-green-500 mr-2"/>
+                        <h2 className="text-xl font-semibold">Outline</h2>
+                    </div>
+                    <div className="space-y-4">
+                        <p>
+                            Прост и легок в подключении. Однако расходует аккумулятор, легче заблокировать операторами
+                            связи.
+                        </p>
+                        <p>
+                            Рекомендуем использовать его как запасной вариант подключения.
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

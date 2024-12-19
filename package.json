@@ -7,6 +7,7 @@
     "lucide-react": "^0.468.0",
     "normalize.css": "^8.0.1",
     "qrcode.react": "^4.1.0",
-    "styled-components": "^6.1.13"
+    "styled-components": "^6.1.13",
+    "vite": "^6.0.4"
   }
 }

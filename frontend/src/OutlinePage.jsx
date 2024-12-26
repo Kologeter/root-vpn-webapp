@@ -1,18 +1,12 @@
 import { useEffect, useState } from 'react';
 import {useNavigate} from "react-router-dom";
 import './App.css';
-import androidInstr from './assets/images/androidInstr.jpg';
-import iphoneGif from './assets/images/iphone.gif';
-import hiddfyMp4 from './assets/images/hiddfy.mp4';
 import axios from "axios";
 
-export default function VlessSettings() {
+export default function OutlineSettings() {
     const navigate = useNavigate();
     const [copiedIndex, setCopiedIndex] = useState(null); // Включено состояние
-    const [Video, setVideo] = useState(false);
-    const [Platform, setPlatform] = useState('');
-    const [width, setWidth] = useState(window.innerWidth);
-    const [LinkVless, setLinkVless] = useState('');
+    const [OutlineLink, setOutlineLink] = useState('');
 
     // Обеспечить, чтобы значение site корректно передавалось:
     const site = import.meta.env.VITE_SITE || '';
@@ -25,12 +19,6 @@ export default function VlessSettings() {
         setTimeout(() => setCopiedIndex(null), 1500);
     };
 
-    // const [openSnackbar, setOpenSnackbar] = useState(false);
-
-    // const handleCopyClick = () => {
-    //     handleCopy(`${site}/vless/${key}`, 0);
-    //     setOpenSnackbar(true);
-    // };
     useEffect(() => {
         const fetchData = async () => {
             const telegram = window.Telegram?.WebApp;
@@ -47,13 +35,13 @@ export default function VlessSettings() {
             console.log('hash:', hash);
 
             try {
-                const response = await axios.get(`${site}/getvless/${user.id}`, {
+                const response = await axios.get(`${site}/outlinelink${user.id}`, {
                     params: {
                         initData,
                         hash,
-                    // user_id: user.id,
-                    // initData: initData,
-                    // hash: hash,
+                        // user_id: user.id,
+                        // initData: initData,
+                        // hash: hash,
 
                     },
                 });
@@ -61,9 +49,9 @@ export default function VlessSettings() {
                 console.log('response.status ', response.status);
 
                 if (response.status === 200) {
-                    const vlessLink = response.data?.vless_link;
-                    console.log('VLESS Link:', vlessLink);
-                    setLinkVless(vlessLink);
+                    const outlineLink = response.data?.outline_link;
+                    console.log('outlineLink:', outlineLink);
+                    setOutlineLink(outlineLink);
                 } else {
                     console.error('Error from server:', response.status, response.data);
                 }
@@ -76,24 +64,24 @@ export default function VlessSettings() {
     }, [site]);
 
 
-    const getVlessApp = () => {
+    const getOutlineApp = () => {
         const tg = window.Telegram.WebApp;
 
         switch (tg.platform) {
             case 'ios':
-                tg.openLink('https://apps.apple.com/ru/app/v2raytun/id6476628951');
+                tg.openLink('https://apps.apple.com/us/app/outline-app/id1356177741');
                 return;
             case 'android':
-                tg.openLink('https://play.google.com/store/apps/details?id=com.v2raytun.android&hl=ru&gl=US');
+                tg.openLink('https://play.google.com/store/apps/details?id=org.outline.android.client');
                 return;
             case 'web':
-                tg.openLink('https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-Windows-Setup-x64.exe');
+                tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
             case 'macos':
-                tg.openLink('https://apps.apple.com/ru/app/v2raytun/id6476628951');
+                tg.openLink('https://itunes.apple.com/us/app/outline-app/id1356178125');
                 return;
             case 'tdesktop':
-                tg.openLink('https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-Windows-Setup-x64.exe');
+                tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
                 return;
             default:
                 tg.openLink('https://s3.amazonaws.com/outline-releases/client/windows/stable/Outline-Client.exe');
@@ -101,25 +89,6 @@ export default function VlessSettings() {
         }
     };
 
-    useEffect(() => {
-        const tg = window.Telegram.WebApp;
-        switch (tg.platform) {
-            case 'android':
-                setPlatform(androidInstr);
-                break;
-            case 'ios':
-                setPlatform(iphoneGif);
-                // setPlatform(androidInstr);
-                break;
-            case 'tdesktop':
-            case 'macos':
-                setVideo(true);
-                setPlatform(hiddfyMp4);
-                break;
-            default:
-                setPlatform('');
-        }
-    }, []);
 
     useEffect(() => {
         const tg = window.Telegram.WebApp;
@@ -140,13 +109,7 @@ export default function VlessSettings() {
         // setKey(user?.id || '');
     }, [navigate]);
 
-    useEffect(() => {
-        const handleResize = () => setWidth(window.innerWidth);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
 
-    const maxWidth = width > 1024 ? 600 : width > 768 ? 400 : 300;
 
     return (
         <div className="steps-container">
@@ -154,40 +117,25 @@ export default function VlessSettings() {
             <div className="input-group">
                 <input
                     type="text"
-                    placeholder="VLESS Link"
+                    placeholder="Outline Link"
                     readOnly
-                    value={LinkVless} // Используем состояние как значение
-                    onChange={(e) => setLinkVless(e.target.value)} // Это не обязательно для readOnly
+                    value={OutlineLink} // Используем состояние как значение
+                    onChange={(e) => setOutlineLink(e.target.value)} // Это не обязательно для readOnly
                     className="input-field"
                 />
-                <button onClick={() => handleCopy(LinkVless, 0)} className="btn-primary">
+                <button onClick={() => handleCopy(OutlineLink, 0)} className="btn-primary">
                     Копировать ключ
                 </button>
             </div>
             {copiedIndex !== null && <p className="success-message">Скопировано!</p>}
             <p className="step-title">Шаг 2. Установите приложение</p>
-            <button onClick={getVlessApp} className="btn-primary">
+            <button onClick={getOutlineApp} className="btn-primary">
                 Установить приложение
             </button>
             <p className="step-title">Шаг 3. Подключитесь</p>
-            <div style={{ maxWidth: `${maxWidth}px`, margin: '0 auto' }}>
-                {!Video ? (
-                    <img
-                        src={Platform}
-                        alt="инструкция"
-                        style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }}
-                    />
-                ) : (
-                    <video
-                        src={Platform}
-                        controls
-                        style={{ width: '100%', maxHeight: '400px', objectFit: 'contain' }}
-                    >
-                        Ваш браузер не поддерживает видео.
-                    </video>
-                )}
+            <div>
+                <p>Скачайте приложение Outline и вставьте скопированный ключ</p>
             </div>
         </div>
     );
 }
-

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Player } from '@lottiefiles/react-lottie-player';
 import duckAnimation from './assets/AnimatedSticker.json';
-// import { Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import './App.css';
 import { useNavigate } from 'react-router-dom';
@@ -88,7 +87,7 @@ function App() {
         // return () => {
         //     socket.close();
         // };
-    }, [navigate]);
+    }, [site, navigate]);
 
 
     const handleSubscriptionError = (error) => {

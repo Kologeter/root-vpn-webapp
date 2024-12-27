@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import {useEffect} from 'react';
 import './PaymentAlert.css';
 import PropTypes from "prop-types";
 

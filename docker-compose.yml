@@ -4,6 +4,6 @@ services:
       context: ./frontend
     restart: always
     env_file:
-      - ./frontend/.env.dev
+      - ./frontend/.env
     ports:
       - '3150:3150'

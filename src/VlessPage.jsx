@@ -5,6 +5,7 @@ import androidInstr from './assets/images/androidInstr.jpg';
 import iphoneGif from './assets/images/iphone.gif';
 import hiddfyMp4 from './assets/images/hiddfy.mp4';
 import axios from "axios";
+import chalk from "chalk";
 
 export default function VlessSettings() {
     const navigate = useNavigate();
@@ -17,12 +18,13 @@ export default function VlessSettings() {
     // Обеспечить, чтобы значение site корректно передавалось:
     const site = import.meta.env.VITE_SITE || '';
 
-    console.log('site', site)
+    console.log('site', site);
+    console.log(chalk.green("site", site));
 
     const handleCopy = (link, index) => {
 
         if (!link) {
-            console.error("Link is empty or undefined.");
+            console.error(chalk.red("Link is empty or undefined."));
             return;
         }
 
@@ -33,7 +35,7 @@ export default function VlessSettings() {
                     setCopiedIndex(index);
                     setTimeout(() => setCopiedIndex(null), 1500);
                 })
-                .catch((err) => console.error("Failed to copy text:", err));
+                .catch((err) => console.error(chalk.red("Failed to copy text:", err)));
         } else {
             // Резервный метод для копирования
             const textArea = document.createElement("textarea");
@@ -178,7 +180,7 @@ export default function VlessSettings() {
 
     return (
         <div className="steps-container">
-            <p className="step-title">Шаг 1. Скопируйте ваш ключ</p>
+            <p className="step-title">Шаг 1. Скопируйте вашу ключ-ссылку</p>
             <div className="input-group">
                 <input
                     type="text"
@@ -189,7 +191,7 @@ export default function VlessSettings() {
                     className="input-field"
                 />
                 <button onClick={() => handleCopy(LinkVless, 0)} className="btn-primary">
-                    Копировать ключ
+                    Копировать ключ-ссылку
                 </button>
             </div>
             {copiedIndex !== null && <p className="success-message">Скопировано!</p>}

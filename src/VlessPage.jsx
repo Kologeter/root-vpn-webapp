@@ -6,6 +6,8 @@ import iphoneGif from './assets/images/iphone.gif';
 import hiddfyMp4 from './assets/images/hiddfy.mp4';
 import axios from "axios";
 import chalk from "chalk";
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+
 
 export default function VlessSettings() {
     const navigate = useNavigate();
@@ -28,30 +30,33 @@ export default function VlessSettings() {
             return;
         }
 
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard
-                .writeText(link)
-                .then(() => {
-                    setCopiedIndex(index);
-                    setTimeout(() => setCopiedIndex(null), 1500);
-                })
-                .catch((err) => console.error(chalk.red("Failed to copy text:", err)));
-        } else {
-            // Резервный метод для копирования
-            const textArea = document.createElement("textarea");
-            textArea.value = link;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand("copy");
-                setCopiedIndex(index);
-                setTimeout(() => setCopiedIndex(null), 1500);
-            } catch (err) {
-                console.error("Fallback copy failed:", err);
-            } finally {
-                document.body.removeChild(textArea);
-            }
-        }
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 1500);
+
+        // if (navigator.clipboard && navigator.clipboard.writeText) {
+        //     navigator.clipboard
+        //         .writeText(link)
+        //         .then(() => {
+        //             setCopiedIndex(index);
+        //             setTimeout(() => setCopiedIndex(null), 1500);
+        //         })
+        //         .catch((err) => console.error(chalk.red("Failed to copy text:", err)));
+        // } else {
+        //     // Резервный метод для копирования
+        //     const textArea = document.createElement("textarea");
+        //     textArea.value = link;
+        //     document.body.appendChild(textArea);
+        //     textArea.select();
+        //     try {
+        //         document.execCommand("copy");
+        //         setCopiedIndex(index);
+        //         setTimeout(() => setCopiedIndex(null), 1500);
+        //     } catch (err) {
+        //         console.error("Fallback copy failed:", err);
+        //     } finally {
+        //         document.body.removeChild(textArea);
+        //     }
+        // }
     };
 
 
@@ -190,9 +195,12 @@ export default function VlessSettings() {
                     onChange={(e) => setLinkVless(e.target.value)} // Это не обязательно для readOnly
                     className="input-field"
                 />
-                <button onClick={() => handleCopy(LinkVless, 0)} className="btn-primary">
-                    Копировать ключ-ссылку
-                </button>
+                {/*<button onClick={() => handleCopy(LinkVless, 0)} className="btn-primary">*/}
+                {/*    Копировать ключ-ссылку*/}
+                {/*</button>*/}
+                <CopyToClipboard text={LinkVless} onCopy={() => handleCopy(LinkVless, 0)}>
+                    <button>Копировать ключ-ссылку</button>
+                </CopyToClipboard>
             </div>
             {copiedIndex !== null && <p className="success-message">Скопировано!</p>}
             <p className="step-title">Шаг 2. Установите приложение</p>

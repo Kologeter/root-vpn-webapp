@@ -1,13 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-// import axios from "axios";
-// import { Shield, Zap } from 'lucide-react';
+import { WebApp } from '@twa-dev/sdk';
 
 
 
 export default function ProtocolPage() {
     const site = import.meta.env.VITE_SITE || "";
     const navigate = useNavigate();
+    const themeParams = WebApp.themeParams;
 
     console.log("site", site);
 
@@ -47,6 +47,7 @@ export default function ProtocolPage() {
         });
 
         tg.ready();
+        WebApp.ready();
     }, [site, navigate]);
 
     // const getLinkRedirectOutline = (url) => {
@@ -83,42 +84,63 @@ export default function ProtocolPage() {
     // };
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            <h1 className="text-3xl font-bold mb-6 text-center">Выберите протокол VPN</h1>
-            <div className="grid md:grid-cols-2 gap-8">
-                <div className="bg-white rounded-lg shadow-md p-6">
-                    <div className="flex items-center mb-4">
-                        {/*<Zap className="w-8 h-8 text-blue-500 mr-2"/>*/}
-                        <h2 className="text-xl font-semibold">VLESS reality (tcp)</h2>
-                    </div>
-                    <div className="space-y-4">
-                        <p>
-                            Это современный протокол, особенностью которого является маскировка
-                            под обычный интернет трафик. Из-за данной особенности его сложнее заблокировать.
-                        </p>
-                        <p>
-                            Есть возможность добавлять сайты, домены в исключения VPN. Есть роутинг.
-                            Сложнее заблокировать операторами связи.
-                        </p>
-                        <p className="font-semibold">
-                            Рекомендуем использовать данный протокол.
-                        </p>
-                    </div>
+        <div
+            style={{
+                backgroundColor: themeParams.bg_color || '#ffffff',
+                color: themeParams.text_color || '#000000',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif',
+                padding: '16px',
+                minHeight: '100vh',
+            }}
+        >
+            <h1
+                style={{
+                    fontSize: '24px',
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    marginBottom: '16px',
+                }}
+            >
+                Выберите протокол VPN
+            </h1>
+            <div style={{ display: 'grid', gap: '16px' }}>
+                <div
+                    style={{
+                        backgroundColor: themeParams.bg_color || '#ffffff',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                        padding: '16px',
+                    }}
+                >
+                    <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>
+                        VLESS reality (tcp)
+                    </h2>
+                    <p>
+                        Это современный протокол, особенностью которого является маскировка под обычный интернет трафик.
+                        Из-за данной особенности его сложнее заблокировать.
+                    </p>
+                    <p>
+                        Есть возможность добавлять сайты, домены в исключения VPN. Есть роутинг. Сложнее заблокировать
+                        операторами связи.
+                    </p>
+                    <p style={{ fontWeight: '600' }}>Рекомендуем использовать данный протокол.</p>
                 </div>
-                <div className="bg-white rounded-lg shadow-md p-6">
-                    <div className="flex items-center mb-4">
-                        {/*<Shield className="w-8 h-8 text-green-500 mr-2"/>*/}
-                        <h2 className="text-xl font-semibold">Outline</h2>
-                    </div>
-                    <div className="space-y-4">
-                        <p>
-                            Прост и легок в подключении. Однако расходует аккумулятор, легче заблокировать операторами
-                            связи.
-                        </p>
-                        <p>
-                            Рекомендуем использовать его как запасной вариант подключения.
-                        </p>
-                    </div>
+                <div
+                    style={{
+                        backgroundColor: themeParams.bg_color || '#ffffff',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                        padding: '16px',
+                    }}
+                >
+                    <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>
+                        Outline
+                    </h2>
+                    <p>
+                        Прост и легок в подключении. Однако расходует аккумулятор, легче заблокировать операторами
+                        связи.
+                    </p>
+                    <p>Рекомендуем использовать его как запасной вариант подключения.</p>
                 </div>
             </div>
         </div>

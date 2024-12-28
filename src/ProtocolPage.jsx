@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { WebApp } from '@twa-dev/sdk';
+import WebApp from '@twa-dev/sdk';
 
 
 
 export default function ProtocolPage() {
     const site = import.meta.env.VITE_SITE || "";
     const navigate = useNavigate();
-    const themeParams = WebApp.themeParams;
+    const themeParams = WebApp?.themeParams || {
+        bg_color: '#ffffff',
+        text_color: '#000000',
+    };
 
     console.log("site", site);
 

@@ -20,10 +20,38 @@ export default function VlessSettings() {
     console.log('site', site)
 
     const handleCopy = (link, index) => {
-        navigator.clipboard.writeText(link);
-        setCopiedIndex(index);
-        setTimeout(() => setCopiedIndex(null), 1500);
+
+        if (!link) {
+            console.error("Link is empty or undefined.");
+            return;
+        }
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard
+                .writeText(link)
+                .then(() => {
+                    setCopiedIndex(index);
+                    setTimeout(() => setCopiedIndex(null), 1500);
+                })
+                .catch((err) => console.error("Failed to copy text:", err));
+        } else {
+            // Резервный метод для копирования
+            const textArea = document.createElement("textarea");
+            textArea.value = link;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand("copy");
+                setCopiedIndex(index);
+                setTimeout(() => setCopiedIndex(null), 1500);
+            } catch (err) {
+                console.error("Fallback copy failed:", err);
+            } finally {
+                document.body.removeChild(textArea);
+            }
+        }
     };
+
 
     // const [openSnackbar, setOpenSnackbar] = useState(false);
 

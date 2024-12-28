@@ -1,30 +1,27 @@
-# Этап сборки приложения
 FROM node:alpine AS build
 
-# Установка зависимостей
-WORKDIR /app
-COPY package.json package-lock.json ./
+COPY package.json package.json
+
+COPY package-lock.json package-lock.json
+
+COPY vite.config.js vite.config.js
+
 RUN npm install
 
-# Копирование исходного кода и настройка
 COPY . .
+
+RUN #npm uninstall react-scripts && npm install react-scripts
+
 RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
+
 RUN npm run build
 
-# Этап сборки Nginx-образа
 FROM nginx:alpine
 
-# Установка рабочих директорий
-WORKDIR /usr/share/nginx/html
+COPY --from=build /dist /usr/share/nginx/html
 
-# Копирование статических файлов из этапа сборки
-COPY --from=build /app/dist ./
+COPY --from=build nginx.conf /etc/nginx/conf.d/default.conf
 
-# Копирование шаблона конфигурации Nginx
-COPY nginx.template.conf /etc/nginx/nginx.template.conf
+EXPOSE 3150
 
-# Экспонирование порта
-EXPOSE ${NGINX_PORT}
-
-# Подстановка переменных и запуск Nginx
-CMD ["/bin/sh", "-c", "envsubst '${NGINX_PORT}' < /etc/nginx/nginx.template.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"]
+CMD ["nginx", "-g", "daemon off;"]

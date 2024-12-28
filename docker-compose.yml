@@ -1,14 +1,9 @@
-version: '3.8'
 services:
-  frontend-test-test:
+  webapp-test:
     build:
       context: ./
-      dockerfile: Dockerfile
     restart: always
     env_file:
       - .env
-    volumes:
-      - ./nginx.template.conf:/etc/nginx/nginx.template.conf
     ports:
-      - "${NGINX_PORT}:${NGINX_PORT}"
-    command: /bin/sh -c "envsubst '${NGINX_PORT}' < /etc/nginx/nginx.template.conf > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
+      - '3150:3150'

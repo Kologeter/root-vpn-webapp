@@ -1,9 +1,9 @@
 services:
-  frontend-prod:
+  webapp-prod:
     build:
-      context: ./frontend
+      context: ./
     restart: always
     env_file:
-      - ./frontend/.env.prod
+      - .env.prod
     ports:
       - '3022:3022'

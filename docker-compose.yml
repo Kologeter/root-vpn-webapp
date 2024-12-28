@@ -11,4 +11,4 @@ services:
     env_file:
       - .env
     ports:
-      - '3150:3150'
+      - '3022:3022'

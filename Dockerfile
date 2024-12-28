@@ -10,8 +10,6 @@ RUN npm install
 
 COPY . .
 
-RUN #npm uninstall react-scripts && npm install react-scripts
-
 RUN npm install --save-dev @babel/plugin-proposal-private-property-in-object
 
 RUN npm run build

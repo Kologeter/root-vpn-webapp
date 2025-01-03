@@ -45,7 +45,7 @@ const CodeVerificationForm = () => {
                         id="code"
                         value={code}
                         onChange={handleChange}
-                        maxLength={6}
+                        maxLength={9}
                         placeholder="123456"
                     />
                     {error && <p className="error-message">{error}</p>}

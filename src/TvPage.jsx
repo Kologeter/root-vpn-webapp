@@ -21,7 +21,7 @@ const CodeVerificationForm = () => {
         try {
             const response = await axios.post(`${site}/code`, { code });
 
-            console.log(`response data ${response.data}`)
+            console.log(`response data ${response}`)
 
             if (response.data.success) {
                 setIsVerified(true);

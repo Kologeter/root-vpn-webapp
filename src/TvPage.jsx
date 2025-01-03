@@ -7,6 +7,8 @@ const CodeVerificationForm = () => {
     const [error, setError] = useState("");
     const [isVerified, setIsVerified] = useState(false);
     const [verificationData, setVerificationData] = useState(null);
+    const site = import.meta.env.VITE_SITE || '';
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -17,7 +19,7 @@ const CodeVerificationForm = () => {
         }
 
         try {
-            const response = await axios.post("/code", { code });
+            const response = await axios.post(`${site}/code`, { code });
 
             if (response.data.success) {
                 setIsVerified(true);
@@ -46,7 +48,7 @@ const CodeVerificationForm = () => {
                         value={code}
                         onChange={handleChange}
                         maxLength={9}
-                        placeholder="123456"
+                        placeholder="123456789"
                     />
                     {error && <p className="error-message">{error}</p>}
                     <button type="submit">Проверить</button>

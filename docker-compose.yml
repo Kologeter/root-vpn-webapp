@@ -1,5 +1,5 @@
 services:
-  webapp-prod:
+  webapp-prod-test:
     build:
       context: ./
     logging:
@@ -11,4 +11,4 @@ services:
     env_file:
       - .env
     ports:
-      - '3022:3022'
+      - '3150:3150'

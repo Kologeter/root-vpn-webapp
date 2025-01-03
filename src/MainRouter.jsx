@@ -7,6 +7,7 @@ import VlessSettings from "./VlessPage.jsx";
 import ProtocolPage from "./ProtocolPage.jsx";
 import DownloadLinks from "./DownloadLinks.jsx";
 import OutlineSettings from "./OutlinePage.jsx";
+import TvPage from "./TvPage.jsx";
 
 
 function MainRouter() {
@@ -20,6 +21,7 @@ function MainRouter() {
                 <Route path='/vless' element={<VlessSettings />}/>
                 <Route path='/outline' element={<OutlineSettings />}/>
                 <Route path='/downloadapp' element={<DownloadLinks />} />
+                <Route path={'/tv'} element={<TvPage />} />
             </Routes>
         </Router>
     );

@@ -33,39 +33,9 @@ export default function VlessSettings() {
         setCopiedIndex(index);
         setTimeout(() => setCopiedIndex(null), 1500);
 
-        // if (navigator.clipboard && navigator.clipboard.writeText) {
-        //     navigator.clipboard
-        //         .writeText(link)
-        //         .then(() => {
-        //             setCopiedIndex(index);
-        //             setTimeout(() => setCopiedIndex(null), 1500);
-        //         })
-        //         .catch((err) => console.error(chalk.red("Failed to copy text:", err)));
-        // } else {
-        //     // Резервный метод для копирования
-        //     const textArea = document.createElement("textarea");
-        //     textArea.value = link;
-        //     document.body.appendChild(textArea);
-        //     textArea.select();
-        //     try {
-        //         document.execCommand("copy");
-        //         setCopiedIndex(index);
-        //         setTimeout(() => setCopiedIndex(null), 1500);
-        //     } catch (err) {
-        //         console.error("Fallback copy failed:", err);
-        //     } finally {
-        //         document.body.removeChild(textArea);
-        //     }
-        // }
     };
 
 
-    // const [openSnackbar, setOpenSnackbar] = useState(false);
-
-    // const handleCopyClick = () => {
-    //     handleCopy(`${site}/vless/${key}`, 0);
-    //     setOpenSnackbar(true);
-    // };
     useEffect(() => {
         const fetchData = async () => {
             const telegram = window.Telegram?.WebApp;

@@ -1,0 +1,9 @@
+services:
+  webapp-prod:
+    build:
+      context: ./
+    restart: always
+    env_file:
+      - .env.prod
+    ports:
+      - '3022:3022'

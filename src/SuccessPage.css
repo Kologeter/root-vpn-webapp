@@ -1,0 +1,22 @@
+.success-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f8ff;
+}
+
+.congrats-text {
+    font-size: 2.5em;
+    color: #32cd32;
+    opacity: 0;
+    transform: translateY(-20px);
+    animation: fadeIn 2s ease-out forwards;
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,143 @@
+/* Общие стили */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+/* Основной контейнер */
+.code-verification-form {
+    width: 80%;
+    max-width: 1200px; /* Максимальная ширина */
+    background-color: #fff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Заголовок */
+h3 {
+    font-size: 3rem;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Стиль для формы */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Ввод кода */
+input {
+    font-size: 2rem;
+    padding: 20px;
+    width: 50%;
+    max-width: 300px;
+    text-align: center;
+    margin-bottom: 20px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    outline: none;
+}
+
+input:focus {
+    border-color: #007bff;
+}
+
+/* Сообщение об ошибке */
+.error-message {
+    color: red;
+    font-size: 1.5rem;
+    margin-top: 10px;
+}
+
+/* Кнопки */
+button {
+    font-size: 2rem;
+    padding: 15px 30px;
+    margin: 15px 0;
+    width: 50%;
+    max-width: 350px;
+    border: none;
+    border-radius: 8px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:focus {
+    outline: none;
+}
+
+/* Стиль для кнопок после успешной валидации */
+button:active {
+    background-color: #003f75;
+}
+
+/* Стили для блока с кнопками после успешной проверки */
+.code-verification-form > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Разделитель между кнопками */
+button + button {
+    margin-top: 20px;
+}
+
+/* Кнопки и форма при большом экране (телевизор) */
+@media (min-width: 768px) {
+    .code-verification-form {
+        padding: 60px;
+        max-width: 1000px;
+    }
+
+    input {
+        font-size: 3rem;
+        width: 40%;
+    }
+
+    button {
+        font-size: 2.5rem;
+        padding: 20px 40px;
+        width: 40%;
+    }
+}
+
+/* Для очень больших экранов (например, 4K телевизор) */
+@media (min-width: 1600px) {
+    .code-verification-form {
+        padding: 80px;
+    }
+
+    h3 {
+        font-size: 4rem;
+    }
+
+    input {
+        font-size: 3.5rem;
+        width: 30%;
+    }
+
+    button {
+        font-size: 3rem;
+        padding: 25px 50px;
+        width: 30%;
+    }
+}

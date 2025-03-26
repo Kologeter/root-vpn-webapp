@@ -1,0 +1,79 @@
+body {
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.steps-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.step-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.input-field {
+    flex-grow: 1;
+    padding: 10px;
+    border: 1px solid var(--tg-theme-hint-color, #ccc);
+    border-radius: 6px;
+    font-size: 16px;
+    background-color: var(--tg-theme-bg-color);
+    color: var(--tg-theme-text-color);
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.input-field:focus {
+    border-color: var(--tg-theme-button-color, #0088cc);
+    outline: none;
+}
+
+.btn-primary {
+    background-color: var(--tg-theme-button-color);
+    color: var(--tg-theme-button-text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-primary:hover {
+    background-color: var(--tg-theme-button-color-hover, #0069d9);
+    transform: scale(1.02);
+}
+
+.success-message {
+    color: #28a745;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.media-container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.media-element {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: var(--tg-theme-secondary-bg-color, #f9f9f9);
+}

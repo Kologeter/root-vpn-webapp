@@ -1,8 +1,82 @@
-# React + Vite
+# Telegram mini app for root vpn
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+root vpn - VPN сервис, включающий в себя два протокола VLESS (xray tcp reality), Shadowsocks (Outline) и работает на базе Telegram бота.
+Данный репозиторий представляет frontend часть сервиса, реализованного концепцией telegram mini app (webapp).
+Приложение предоставляет удобный интерфейс для пользователей, позволяя им легко настраивать и контролировать свои VPN-подключения.
 
-Currently, two official plugins are available:
+### Функционал
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Управление подпиской**: пользователи могут просматривать и изменять параметры своей подписки
+- **Выбор протокола**: VLESS or Shadowsocks
+- **Предоставление ссылок для подключения**: в заисимости от протокола
+
+## Технологии
+
+Проект разработан с использованием следующих технологий:
+
+- **React**: библиотека для создания пользовательских интерфейсов.
+- **Vite**: инструмент для быстрой сборки и разработки фронтенд-приложений.
+- **Docker**: контейнеризация приложения для упрощения развертывания и управления зависимостями.
+
+## Установка и запуск
+
+### Локальный запуск
+
+1. **Скачиваем репозитория:**
+
+   ```bash
+   git clone https://github.com/Kologeter/root-vpn-webapp.git
+   ```
+2. **Переход в директорию проекта:**
+   ```bash
+   cd root-vpn-webapp
+   ```
+3. **Установка зависимостей:**
+   ```bash
+   npm install
+   ```
+4. **Запуск в режиме разработки:**
+   ```bash
+   npm run dev
+   ```
+  После запуска приложение будет доступно по адресу http://localhost:3000.
+
+## Docker
+
+1. **Скачиваем репозиторий:**
+
+    ```bash
+    git clone https://github.com/Kologeter/root-vpn-webapp.git
+    ```
+2. **Переход в директорию проекта:**
+
+    ```bash
+    cd root-vpn-webapp
+    ```
+3. **Сборка Docker-образа:**
+   ```bash
+   docker build -t root-vpn-webapp .
+   ```
+
+4. **Запуск контейнера:**
+   ```bash
+   docker run -p 3000:3000 root-vpn-webapp
+   ```
+   После запуска приложение будет доступно по адресу http://localhost:3000.
+
+## Конфигурация
+  Для настройки приложения используются файлы окружения. Пример файла .env (для разработки):
+  ```bash
+  VITE_SITE='https://*you_url*'
+  VITE_WEBSOCKET='wss://*your_url*'
+  ```
+
+### Вклад в проект
+
+Мы приветствуем вклад в развитие проекта. Если вы нашли ошибку или у вас есть предложения по улучшению функциональности, пожалуйста, создайте issue или отправьте pull request в этот репозиторий.
+
+### Лицензия
+
+Этот проект распространяется под лицензией MIT. Подробности можно найти в файле LICENSE в корневой директории репозитория.
+
+*Для получения дополнительной информации о сервисе root vpn переходите по https://root-vpn.ru*

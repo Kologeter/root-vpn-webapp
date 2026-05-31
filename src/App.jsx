@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Player } from '@lottiefiles/react-lottie-player';
 import duckAnimation from './assets/AnimatedSticker.json';
-import axios from 'axios';
 import './App.css';
 import { useNavigate } from 'react-router-dom';
 // import PaymentAlert from "./PaymentAlert.jsx";
@@ -51,18 +50,24 @@ function App() {
         //     console.error("Ошибка WebSocket:", error);
         // };
 
-        axios.post(`${site}/check/subscription`, {
-            user_id: user?.id?.toString(),
-            username: user?.username ? user.username.toString() : "",
-            first_name: user?.first_name
+        fetch(`${site}/check/subscription`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: user?.id?.toString(),
+                username: user?.username ? user.username.toString() : "",
+                first_name: user?.first_name,
+                initData: tg.initData
+            })
         })
-            .then((response) => {
-                const { status, subscription } = response.data;
+            .then((response) => response.json())
+            .then((data) => {
+                const { status, subscription } = data;
                 if (status === 'success') {
                     setSubscriptionInfo(`Ваша подписка активна до ${subscription}`);
                     setHasSubscription(true);
                 } else {
-                    handleSubscriptionError(response.data.error);
+                    handleSubscriptionError(data.error);
                 }
             })
             .catch((error) => {
@@ -77,16 +82,18 @@ function App() {
 
         tg.MainButton.setText("Подключиться");
         tg.MainButton.show();
-        tg.MainButton.onClick(() => {
+        const onMain = () => {
             console.log("Подключение к VPN");
             navigate("/protocol");
-        });
+        };
+        tg.MainButton.onClick(onMain);
 
         tg.ready();
 
-        // return () => {
-        //     socket.close();
-        // };
+        return () => {
+            // снимаем обработчик, иначе при каждом монтировании App копится новый
+            tg.MainButton.offClick(onMain);
+        };
     }, [site, navigate]);
 
 
@@ -124,12 +131,14 @@ function App() {
     };
 
     const getTechSupport = () => {
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
         tg.openTelegramLink('https://t.me/Kologeter');
     };
 
     const stopSubscription = () => {
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
         const user = tg.initDataUnsafe?.user;
 
         if (!user?.id) {
@@ -137,13 +146,19 @@ function App() {
             return;
         }
 
-        axios.post(`${site}/stop/subscription`, {
-            user_id: user.id.toString(),
-            username: user.username,
-            first_name: user.first_name
+        fetch(`${site}/stop/subscription`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: user.id.toString(),
+                username: user.username,
+                first_name: user.first_name,
+                initData: tg.initData
+            })
         })
-            .then((response) => {
-                if (response.data?.status === 'success') {
+            .then((response) => response.json())
+            .then((data) => {
+                if (data?.status === 'success') {
                     tg.showAlert('Подписка успешно остановлена');
                     setSubscriptionInfo('Ваша подписка успешно остановлена.');
                     setHasSubscription(false);
@@ -157,13 +172,19 @@ function App() {
     };
 
     const buySubscription = () => {
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
         const user = tg.initDataUnsafe?.user;
 
-        axios.post(`${site}/createpayment`, { user_id: user?.id?.toString() })
-            .then((response) => {
-                if (response.data?.status === 'success') {
-                    tg.openLink(response.data?.payment_link);
+        fetch(`${site}/createpayment`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ user_id: user?.id?.toString(), initData: tg.initData })
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data?.status === 'success') {
+                    tg.openLink(data?.payment_link);
                 } else {
                     tg.showAlert('Не удалось создать платеж.');
                 }

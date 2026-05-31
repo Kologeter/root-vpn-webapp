@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const CodeVerificationForm = () => {
@@ -13,19 +12,25 @@ const CodeVerificationForm = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (code.length !== 9 || !/^[0-9]{9}$/.test(code)) {
-            setError("Введите корректный шестизначный код.");
+        // code — это числовой Telegram id (разной длины), а не «6-значный».
+        if (!/^[0-9]{5,12}$/.test(code)) {
+            setError("Введите корректный код (только цифры).");
             return;
         }
 
         try {
-            const response = await axios.post(`${site}/code`, { code });
+            const response = await fetch(`${site}/code`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code })
+            });
+            const data = await response.json();
 
-            console.log(`response data ${response}`)
+            console.log('response data', data)
 
-            if (response.data.success) {
+            if (data.status === 'success') {
                 setIsVerified(true);
-                setVerificationData(response.data); // Получаем данные для ключ-ссылки
+                setVerificationData(data); // Получаем данные для ключ-ссылки
             } else {
                 setError("Неверный код. Попробуйте снова.");
             }
@@ -43,13 +48,13 @@ const CodeVerificationForm = () => {
         <div className="code-verification-form">
             {!isVerified ? (
                 <form onSubmit={handleSubmit}>
-                    <label htmlFor="code">Введите шестизначный код:</label>
+                    <label htmlFor="code">Введите ваш код:</label>
                     <input
                         type="text"
                         id="code"
                         value={code}
                         onChange={handleChange}
-                        maxLength={9}
+                        maxLength={12}
                         placeholder="123456789"
                     />
                     {error && <p className="error-message">{error}</p>}

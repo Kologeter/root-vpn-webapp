@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import {useNavigate} from "react-router-dom";
 import './App.css';
-import axios from "axios";
 
 export default function OutlineSettings() {
     const navigate = useNavigate();
@@ -20,14 +19,15 @@ export default function OutlineSettings() {
     };
 
     useEffect(() => {
+        let cancelled = false;
         const fetchData = async () => {
             const telegram = window.Telegram?.WebApp;
             const user = telegram?.initDataUnsafe?.user; // Данные пользователя
             const initData = telegram?.initData;
             const hash = new URLSearchParams(initData).get('hash');
 
-            if (!initData || !hash) {
-                console.error('Missing initData or hash.');
+            if (!initData || !hash || !user?.id) {
+                console.error('Missing initData/hash/user.');
                 return;
             }
 
@@ -35,37 +35,30 @@ export default function OutlineSettings() {
             console.log('hash:', hash);
 
             try {
-                const response = await axios.get(`${site}/outlinelink${user.id}`, {
-                    params: {
-                        initData,
-                        hash,
-                        // user_id: user.id,
-                        // initData: initData,
-                        // hash: hash,
-
-                    },
-                });
-                console.log('response ', response);
+                const params = new URLSearchParams({ initData, hash });
+                const response = await fetch(`${site}/outlinelink${user.id}?${params}`);
+                if (cancelled) return;
                 console.log('response.status ', response.status);
 
-                if (response.status === 200) {
-                    const outlineLink = response.data?.outline_link;
-                    console.log('outlineLink:', outlineLink);
-                    setOutlineLink(outlineLink);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (!cancelled) setOutlineLink(data?.outline_link);
                 } else {
-                    console.error('Error from server:', response.status, response.data);
+                    console.error('Error from server:', response.status, await response.text());
                 }
             } catch (error) {
-                console.error('Request failed:', error.response?.status, error.response?.data || error.message);
+                console.error('Request failed:', error.message);
             }
         };
 
         fetchData();
+        return () => { cancelled = true; };  // не вызывать setState после ухода со страницы
     }, [site]);
 
 
     const getOutlineApp = () => {
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
 
         switch (tg.platform) {
             case 'ios':
@@ -91,22 +84,24 @@ export default function OutlineSettings() {
 
 
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
-        // const user = tg.initDataUnsafe?.user;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
 
-        tg.BackButton.onClick(() => {
-            navigate('/protocol');
-        });
-
-        tg.SecondaryButton.hide();
-        tg.MainButton.setText('На главную');
-        tg.MainButton.onClick(() => {
+        const onBack = () => navigate('/protocol');
+        const onMain = () => {
             tg.MainButton.setText('Подключиться');
             navigate('/');
-        });
+        };
 
+        tg.BackButton.onClick(onBack);
+        tg.SecondaryButton.hide();
+        tg.MainButton.setText('На главную');
+        tg.MainButton.onClick(onMain);
 
-        // setKey(user?.id || '');
+        return () => {
+            tg.BackButton.offClick(onBack);
+            tg.MainButton.offClick(onMain);
+        };
     }, [navigate]);
 
 

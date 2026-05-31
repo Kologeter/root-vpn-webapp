@@ -1,5 +1,4 @@
 import './CountryPage.css';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import finlandFlag from './assets/images/finland.jpg';
@@ -23,8 +22,12 @@ function CountryPage() {
                 return;
             }
 
-            const response = await axios.post(`${site}/changecountry`, { user_id: user.id, country });
-            if (response.status === 200) {
+            const response = await fetch(`${site}/changecountry`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: user.id, country, initData: telegram.initData })
+            });
+            if (response.ok) {
                 setIsSuccess(true);
                 setShowAlert(true);
                 setSelectedCountry(country);
@@ -46,14 +49,13 @@ function CountryPage() {
             return;
         }
 
+        const onBack = () => navigate('/');
         tg.BackButton.show();
-        tg.BackButton.onClick(() => {
-            navigate('/');
-        });
+        tg.BackButton.onClick(onBack);
 
         return () => {
             tg.BackButton.hide();
-            tg.BackButton.offClick(); // Удаление обработчика
+            tg.BackButton.offClick(onBack); // снимаем именно этот колбэк (offClick() без аргумента анонимный не снимает)
         };
     }, [navigate]);
 

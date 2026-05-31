@@ -12,19 +12,19 @@ function DownloadLinks() {
             return;
         }
 
+        const onBack = () => navigate('/');
         tg.BackButton.show();
-        tg.BackButton.onClick(() => {
-            navigate('/');
-        });
+        tg.BackButton.onClick(onBack);
 
         return () => {
             tg.BackButton.hide();
-            tg.BackButton.offClick();
+            tg.BackButton.offClick(onBack); // снимаем именно этот колбэк
         };
     }, [navigate]);
 
     const downloadLink = (platformLinks) => {
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
         const link = platformLinks[tg.platform] || platformLinks.default;
         tg.openLink(link);
     };

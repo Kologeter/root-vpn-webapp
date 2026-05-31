@@ -4,7 +4,6 @@ import './App.css';
 import androidInstr from './assets/images/androidInstr.jpg';
 import iphoneGif from './assets/images/iphone.gif';
 import hiddfyMp4 from './assets/images/hiddfy.mp4';
-import axios from "axios";
 import chalk from "chalk";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
@@ -37,14 +36,15 @@ export default function VlessSettings() {
 
 
     useEffect(() => {
+        let cancelled = false;
         const fetchData = async () => {
             const telegram = window.Telegram?.WebApp;
             const user = telegram?.initDataUnsafe?.user; // Данные пользователя
             const initData = telegram?.initData;
             const hash = new URLSearchParams(initData).get('hash');
 
-            if (!initData || !hash) {
-                console.error('Missing initData or hash.');
+            if (!initData || !hash || !user?.id) {
+                console.error('Missing initData/hash/user.');
                 return;
             }
 
@@ -52,37 +52,30 @@ export default function VlessSettings() {
             console.log('hash:', hash);
 
             try {
-                const response = await axios.get(`${site}/getvless/${user.id}`, {
-                    params: {
-                        initData,
-                        hash,
-                    // user_id: user.id,
-                    // initData: initData,
-                    // hash: hash,
-
-                    },
-                });
-                console.log('response ', response);
+                const params = new URLSearchParams({ initData, hash });
+                const response = await fetch(`${site}/getvless/${user.id}?${params}`);
+                if (cancelled) return;
                 console.log('response.status ', response.status);
 
-                if (response.status === 200) {
-                    const vlessLink = response.data?.vless_link;
-                    console.log('VLESS Link:', vlessLink);
-                    setLinkVless(vlessLink);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (!cancelled) setLinkVless(data?.vless_link);
                 } else {
-                    console.error('Error from server:', response.status, response.data);
+                    console.error('Error from server:', response.status, await response.text());
                 }
             } catch (error) {
-                console.error('Request failed:', error.response?.status, error.response?.data || error.message);
+                console.error('Request failed:', error.message);
             }
         };
 
         fetchData();
+        return () => { cancelled = true; };  // не вызывать setState после ухода со страницы
     }, [site]);
 
 
     const getVlessApp = () => {
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
 
         switch (tg.platform) {
             case 'ios':
@@ -107,7 +100,8 @@ export default function VlessSettings() {
     };
 
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
         switch (tg.platform) {
             case 'android':
                 setPlatform(androidInstr);
@@ -127,22 +121,26 @@ export default function VlessSettings() {
     }, []);
 
     useEffect(() => {
-        const tg = window.Telegram.WebApp;
-        // const user = tg.initDataUnsafe?.user;
+        const tg = window.Telegram?.WebApp;
+        if (!tg) return;
 
-        tg.BackButton.onClick(() => {
-            navigate('/protocol');
-        });
-
-        tg.SecondaryButton.hide();
-        tg.MainButton.setText('На главную');
-        tg.MainButton.onClick(() => {
+        // Сохраняем ссылки на колбэки, чтобы снять их в cleanup (иначе обработчики
+        // накапливаются на одной нативной кнопке → двойные/чужие навигации).
+        const onBack = () => navigate('/protocol');
+        const onMain = () => {
             tg.MainButton.setText('Подключиться');
             navigate('/');
-        });
+        };
 
+        tg.BackButton.onClick(onBack);
+        tg.SecondaryButton.hide();
+        tg.MainButton.setText('На главную');
+        tg.MainButton.onClick(onMain);
 
-        // setKey(user?.id || '');
+        return () => {
+            tg.BackButton.offClick(onBack);
+            tg.MainButton.offClick(onMain);
+        };
     }, [navigate]);
 
     useEffect(() => {

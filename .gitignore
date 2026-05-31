@@ -16,6 +16,9 @@ dist-ssr
 frontend/.env
 frontend/.env.dev
 *.env
+# Паттерн *.env НЕ ловит .env.prod/.env.dev/.env — добавляем явно
+.env
+.env.*
 
 # Editor directories and files
 .vscode/*

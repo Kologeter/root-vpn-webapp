@@ -22,35 +22,42 @@ export default function ProtocolPage() {
             return;
         }
 
-        // Настраиваем MainButton
-        tg.MainButton.setText("VLESS");
-        // tg.MainButton.position('left')
-        tg.MainButton.show();
-        // tg.MainButton.hasShineEffect();
-
-        tg.MainButton.onClick(() => {
+        // Колбэки сохраняем в переменные, чтобы снять их в cleanup (offClick),
+        // иначе при каждом заходе на /protocol на кнопки навешиваются новые обработчики.
+        const onMain = () => {
             console.log("Подключение к VLESS");
             navigate("/vless");
-        });
+        };
+        const onSecondary = () => {
+            console.log("Подключение к Outline VPN");
+            navigate("/outline");
+        };
+        const onBack = () => {
+            tg.MainButton.setText("Подключиться");
+            navigate("/");
+        };
+
+        // Настраиваем MainButton
+        tg.MainButton.setText("VLESS");
+        tg.MainButton.show();
+        tg.MainButton.onClick(onMain);
 
         tg.SecondaryButton.setText('Outline');
         tg.SecondaryButton.show();
-        tg.SecondaryButton.onClick(() => {
-            console.log("Подключение к Outline VPN");
-            navigate("/outline")
-            // getLinkRedirectOutline(`${site}/connect/run`);
-        });
-
+        tg.SecondaryButton.onClick(onSecondary);
 
         // Настраиваем BackButton
         tg.BackButton.show();
-        tg.BackButton.onClick(() => {
-            tg.MainButton.setText("Подключиться");
-            navigate("/");
-        });
+        tg.BackButton.onClick(onBack);
 
         tg.ready();
         WebApp.ready();
+
+        return () => {
+            tg.MainButton.offClick(onMain);
+            tg.SecondaryButton.offClick(onSecondary);
+            tg.BackButton.offClick(onBack);
+        };
     }, [site, navigate]);
 
     // const getLinkRedirectOutline = (url) => {

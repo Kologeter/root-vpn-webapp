@@ -1,13 +1,12 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import WebApp from '@twa-dev/sdk';
 
 
 
 export default function ProtocolPage() {
     const site = import.meta.env.VITE_SITE || "";
     const navigate = useNavigate();
-    const themeParams = WebApp?.themeParams || {
+    const themeParams = window.Telegram?.WebApp?.themeParams || {
         bg_color: '#ffffff',
         text_color: '#000000',
     };
@@ -51,7 +50,6 @@ export default function ProtocolPage() {
         tg.BackButton.onClick(onBack);
 
         tg.ready();
-        WebApp.ready();
 
         return () => {
             tg.MainButton.offClick(onMain);

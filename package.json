@@ -11,8 +11,6 @@
   },
   "dependencies": {
     "@lottiefiles/react-lottie-player": "^3.5.4",
-    "@telegram-apps/sdk": "^2.7.1",
-    "@twa-dev/sdk": "^8.0.1",
     "chalk": "^5.4.1",
     "lucide-react": "^0.468.0",
     "prop-types": "^15.8.1",

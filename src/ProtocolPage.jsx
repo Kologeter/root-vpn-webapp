@@ -2,16 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 
-
 export default function ProtocolPage() {
-    const site = import.meta.env.VITE_SITE || "";
     const navigate = useNavigate();
     const themeParams = window.Telegram?.WebApp?.themeParams || {
         bg_color: '#ffffff',
         text_color: '#000000',
+        button_color: '#2ea6ff',
     };
-
-    console.log("site", site);
 
     useEffect(() => {
         const tg = window.Telegram?.WebApp;
@@ -21,75 +18,43 @@ export default function ProtocolPage() {
             return;
         }
 
-        // Колбэки сохраняем в переменные, чтобы снять их в cleanup (offClick),
-        // иначе при каждом заходе на /protocol на кнопки навешиваются новые обработчики.
-        const onMain = () => {
-            console.log("Подключение к VLESS");
-            navigate("/vless");
-        };
-        const onSecondary = () => {
-            console.log("Подключение к Outline VPN");
-            navigate("/outline");
-        };
-        const onBack = () => {
-            tg.MainButton.setText("Подключиться");
-            navigate("/");
-        };
+        // Протоколов теперь три, а нативных нижних кнопки только две (Main/Secondary).
+        // Поэтому выбор — через кликабельные карточки ниже, а нативные кнопки прячем,
+        // чтобы на них не висели обработчики с прошлых версий страницы.
+        tg.MainButton?.hide();
+        tg.SecondaryButton?.hide();
 
-        // Настраиваем MainButton
-        tg.MainButton.setText("VLESS");
-        tg.MainButton.show();
-        tg.MainButton.onClick(onMain);
-
-        tg.SecondaryButton.setText('Outline');
-        tg.SecondaryButton.show();
-        tg.SecondaryButton.onClick(onSecondary);
-
-        // Настраиваем BackButton
+        const onBack = () => navigate("/");
         tg.BackButton.show();
         tg.BackButton.onClick(onBack);
 
         tg.ready();
 
         return () => {
-            tg.MainButton.offClick(onMain);
-            tg.SecondaryButton.offClick(onSecondary);
             tg.BackButton.offClick(onBack);
         };
-    }, [site, navigate]);
+    }, [navigate]);
 
-    // const getLinkRedirectOutline = (url) => {
-    //     const telegram = window.Telegram?.WebApp;
-    //     const user = telegram?.initDataUnsafe?.user;
-    //
-    //     if (!user || !user.id) {
-    //         console.error("User or user ID is not available.");
-    //         return;
-    //     }
-    //
-    //     // Подготовка hex_id
-    //     const hex_id = "0x" + user.id.toString(16);
-    //
-    //     const url_get = `${url}${hex_id}`;
-    //
-    //     console.log("Платформа: ", telegram.platform);
-    //
-    //     axios
-    //         .get(url_get)
-    //         .then((response) => {
-    //             const redirectUrl = response.data?.redirectUrl;
-    //             console.log("redirectUrl", redirectUrl);
-    //             if (redirectUrl) {
-    //                 // Выполняем редирект на полученную ссылку
-    //                 telegram.openLink(redirectUrl);
-    //             } else {
-    //                 console.error("Redirect URL is not available.");
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.error("Error:", error);
-    //         });
-    // };
+    const cardStyle = {
+        backgroundColor: themeParams.bg_color || '#ffffff',
+        borderRadius: '8px',
+        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+        padding: '16px',
+        cursor: 'pointer',
+    };
+    const pickStyle = {
+        fontWeight: 600,
+        marginTop: '10px',
+        color: themeParams.button_color || '#2ea6ff',
+    };
+
+    const go = (path) => () => navigate(path);
+    const onKey = (path) => (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            navigate(path);
+        }
+    };
 
     return (
         <div
@@ -112,14 +77,7 @@ export default function ProtocolPage() {
                 Выберите протокол VPN
             </h1>
             <div style={{ display: 'grid', gap: '16px' }}>
-                <div
-                    style={{
-                        backgroundColor: themeParams.bg_color || '#ffffff',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                        padding: '16px',
-                    }}
-                >
+                <div style={cardStyle} role="button" tabIndex={0} onClick={go('/vless')} onKeyDown={onKey('/vless')}>
                     <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>
                         VLESS reality (tcp)
                     </h2>
@@ -132,15 +90,21 @@ export default function ProtocolPage() {
                         операторами связи.
                     </p>
                     <p style={{ fontWeight: '600' }}>Рекомендуем использовать данный протокол.</p>
+                    <p style={pickStyle}>Подключить VLESS →</p>
                 </div>
-                <div
-                    style={{
-                        backgroundColor: themeParams.bg_color || '#ffffff',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                        padding: '16px',
-                    }}
-                >
+                <div style={cardStyle} role="button" tabIndex={0} onClick={go('/amnezia')} onKeyDown={onKey('/amnezia')}>
+                    <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>
+                        AmneziaWG 2.0
+                    </h2>
+                    <p>
+                        Обфусцированный UDP-протокол на базе WireGuard. Бьёт в другой вектор, чем VLESS/Outline:
+                        там, где давят TLS/HTTP-маскировку, AmneziaWG часто продолжает работать.
+                    </p>
+                    <p>Высокая скорость, низкий расход батареи. Подключение по QR-коду.</p>
+                    <p style={{ fontWeight: '600' }}>Рекомендуем как независимый запасной канал.</p>
+                    <p style={pickStyle}>Подключить AmneziaWG →</p>
+                </div>
+                <div style={cardStyle} role="button" tabIndex={0} onClick={go('/outline')} onKeyDown={onKey('/outline')}>
                     <h2 style={{ fontSize: '18px', fontWeight: '600', marginBottom: '8px' }}>
                         Outline
                     </h2>
@@ -149,6 +113,7 @@ export default function ProtocolPage() {
                         связи.
                     </p>
                     <p>Рекомендуем использовать его как запасной вариант подключения.</p>
+                    <p style={pickStyle}>Подключить Outline →</p>
                 </div>
             </div>
         </div>

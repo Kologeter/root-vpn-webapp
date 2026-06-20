@@ -1,0 +1,39 @@
+/* QR обязательно на белом фоне — иначе тёмная тема Telegram ломает сканирование */
+.awg-qr {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    padding: 16px;
+    background: #ffffff;
+    border-radius: 12px;
+    margin: 0 auto 8px;
+    width: fit-content;
+}
+
+.awg-conf {
+    width: 100%;
+    box-sizing: border-box;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.4;
+    resize: vertical;
+    padding: 8px;
+    border-radius: 8px;
+}
+
+.awg-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.awg-actions .btn-primary {
+    flex: 1 1 140px;
+}
+
+.awg-hint {
+    font-size: 13px;
+    opacity: 0.8;
+    margin: 4px 0 12px;
+}

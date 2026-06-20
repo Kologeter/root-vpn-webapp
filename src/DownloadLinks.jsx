@@ -47,6 +47,15 @@ function DownloadLinks() {
         default: 'https://github.com/hiddify/hiddify-next/releases/latest/download/Hiddify-Windows-Setup-x64.exe',
     };
 
+    const amneziaLinks = {
+        ios: 'https://apps.apple.com/us/app/amneziawg/id6478942365',
+        android: 'https://play.google.com/store/apps/details?id=org.amnezia.awg',
+        web: 'https://amnezia.org/downloads',
+        macos: 'https://amnezia.org/downloads',
+        tdesktop: 'https://amnezia.org/downloads',
+        default: 'https://amnezia.org/downloads',
+    };
+
     return (
         <div className="app">
             <div className="card">
@@ -61,6 +70,13 @@ function DownloadLinks() {
                     Проверенный временем. Прост и легок в подключении. Однако работает не у всех операторов.
                 </p>
                 <button onClick={() => downloadLink(outlineLinks)}>Outline протокол</button>
+            </div>
+            <div className="card">
+                <p className="description">
+                    Обфусцированный UDP-протокол на базе WireGuard. Бьёт в другой вектор, чем VLESS/Outline —
+                    устойчив там, где давят TLS/HTTP. Подключение по QR-коду.
+                </p>
+                <button onClick={() => downloadLink(amneziaLinks)}>AmneziaWG протокол</button>
             </div>
         </div>
     );

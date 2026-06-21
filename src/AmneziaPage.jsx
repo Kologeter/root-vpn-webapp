@@ -91,25 +91,32 @@ export default function AmneziaPage() {
         setTimeout(() => setCopyMsg(''), 2000);
     };
 
-    // Скачивание .conf. В мобильном Telegram Blob не работает → нативный WebApp.downloadFile
-    // (Bot API 8.0+), который качает по HTTPS-URL. На десктопе/вебе/старых клиентах — фоллбэк на Blob.
+    // Скачивание .conf. В мобильном Telegram Blob не работает. Порядок надёжности:
+    //  1) нативный WebApp.downloadFile (Bot API 8.0+) — качает внутри Telegram;
+    //  2) tg.openLink(file-url) — внешний браузер скачает по Content-Disposition (работает и без downloadFile);
+    //  3) Blob — для обычного веба/десктопа вне Telegram.
     const handleDownload = () => {
         if (!conf) return;
         const tg = window.Telegram?.WebApp;
         const user = tg?.initDataUnsafe?.user;
         const initData = tg?.initData;
         const hash = new URLSearchParams(initData || '').get('hash');
+        const fileUrl = (user?.id && initData && hash)
+            ? `${site}/getamneziawg/file/${user.id}?${new URLSearchParams({ initData, hash })}`
+            : null;
 
-        if (tg && typeof tg.downloadFile === 'function' &&
-            tg.isVersionAtLeast && tg.isVersionAtLeast('8.0') &&
-            user?.id && initData && hash) {
-            const params = new URLSearchParams({ initData, hash });
-            const url = `${site}/getamneziawg/file/${user.id}?${params}`;
-            tg.downloadFile({ url, file_name: filename || 'root-vpn-awg.conf' });
+        if (tg && typeof tg.downloadFile === 'function' && fileUrl) {
+            try {
+                tg.downloadFile({ url: fileUrl, file_name: filename || 'root-vpn-awg.conf' });
+                return;
+            } catch (e) { /* падаем в следующий способ */ }
+        }
+        if (tg && typeof tg.openLink === 'function' && fileUrl) {
+            tg.openLink(fileUrl);   // браузер скачает файл по Content-Disposition
             return;
         }
 
-        // Фоллбэк (десктоп/веб/Telegram < 8.0): Blob + <a download>
+        // Десктоп/веб без Telegram: Blob + <a download>
         const blob = new Blob([conf], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

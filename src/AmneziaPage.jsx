@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { QRCodeCanvas } from 'qrcode.react';
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import './App.css';
 import './AmneziaPage.css';
 
@@ -9,7 +8,7 @@ export default function AmneziaPage() {
     const navigate = useNavigate();
     const [conf, setConf] = useState('');
     const [filename, setFilename] = useState('root-vpn-awg.conf');
-    const [copied, setCopied] = useState(false);
+    const [copyMsg, setCopyMsg] = useState('');
     const [errorMsg, setErrorMsg] = useState('');
     const [width, setWidth] = useState(window.innerWidth);
 
@@ -60,10 +59,36 @@ export default function AmneziaPage() {
         return () => { cancelled = true; };
     }, [site]);
 
-    const handleCopy = () => {
+    // У Telegram НЕТ метода записи в буфер (только чтение readTextFromClipboard).
+    // Поэтому копируем стандартным navigator.clipboard.writeText, с фоллбэком на execCommand.
+    const doCopy = async () => {
         if (!conf) return;
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
+        let ok = false;
+        try {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                await navigator.clipboard.writeText(conf);
+                ok = true;
+            }
+        } catch (e) {
+            ok = false;
+        }
+        if (!ok) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = conf;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                ok = document.execCommand('copy');
+                document.body.removeChild(ta);
+            } catch (e) {
+                ok = false;
+            }
+        }
+        setCopyMsg(ok ? 'Скопировано!' : 'Не удалось — выделите текст вручную');
+        setTimeout(() => setCopyMsg(''), 2000);
     };
 
     // Скачивание .conf. В мобильном Telegram Blob не работает → нативный WebApp.downloadFile
@@ -169,14 +194,12 @@ export default function AmneziaPage() {
                 />
             </div>
             <div className="awg-actions">
-                <CopyToClipboard text={conf} onCopy={handleCopy}>
-                    <button className="btn-primary" disabled={!conf}>Копировать конфиг</button>
-                </CopyToClipboard>
+                <button className="btn-primary" onClick={doCopy} disabled={!conf}>Копировать конфиг</button>
                 <button className="btn-primary" onClick={handleDownload} disabled={!conf}>
                     Скачать .conf
                 </button>
             </div>
-            {copied && <p className="success-message">Скопировано!</p>}
+            {copyMsg && <p className="success-message">{copyMsg}</p>}
 
             <p className="step-title">Шаг 3. Установите приложение</p>
             <button onClick={getAmneziaApp} className="btn-primary">

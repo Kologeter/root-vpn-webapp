@@ -66,9 +66,25 @@ export default function AmneziaPage() {
         setTimeout(() => setCopied(false), 1500);
     };
 
-    // На десктопе сработает; в мобильном Telegram скачивание Blob может не пройти — тогда QR/копирование.
+    // Скачивание .conf. В мобильном Telegram Blob не работает → нативный WebApp.downloadFile
+    // (Bot API 8.0+), который качает по HTTPS-URL. На десктопе/вебе/старых клиентах — фоллбэк на Blob.
     const handleDownload = () => {
         if (!conf) return;
+        const tg = window.Telegram?.WebApp;
+        const user = tg?.initDataUnsafe?.user;
+        const initData = tg?.initData;
+        const hash = new URLSearchParams(initData || '').get('hash');
+
+        if (tg && typeof tg.downloadFile === 'function' &&
+            tg.isVersionAtLeast && tg.isVersionAtLeast('8.0') &&
+            user?.id && initData && hash) {
+            const params = new URLSearchParams({ initData, hash });
+            const url = `${site}/getamneziawg/file/${user.id}?${params}`;
+            tg.downloadFile({ url, file_name: filename || 'root-vpn-awg.conf' });
+            return;
+        }
+
+        // Фоллбэк (десктоп/веб/Telegram < 8.0): Blob + <a download>
         const blob = new Blob([conf], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

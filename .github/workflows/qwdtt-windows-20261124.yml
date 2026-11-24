@@ -13,7 +13,7 @@ concurrency:
 
 jobs:
   native-windows:
-    runs-on: windows-2025
+    runs-on: windows-11-arm
     timeout-minutes: 20
     defaults:
       run:
@@ -33,16 +33,16 @@ jobs:
           $PSNativeCommandUseErrorActionPreference = $false
           $ProgressPreference = 'SilentlyContinue'
           $releaseRoot = Join-Path $env:RUNNER_TEMP 'root-qwdtt-official-release'
-          $zip = Join-Path $env:RUNNER_TEMP 'Rawline-1.2-windows64.zip'
+          $zip = Join-Path $env:RUNNER_TEMP 'Rawline-1.2-windows-arm64.zip'
           $output = Join-Path $env:RUNNER_TEMP 'root-qwdtt-import.stdout.private'
           $errorLog = Join-Path $env:RUNNER_TEMP 'root-qwdtt-import.stderr.private'
           $process = $null
           $importPassed = $false
           $phase = 'download'
           try {
-            Invoke-WebRequest -Uri 'https://github.com/ttrroyy/Rawline/releases/download/rawline-1.2/Rawline-1.2-windows64.zip' -OutFile $zip
+            Invoke-WebRequest -Uri 'https://github.com/ttrroyy/Rawline/releases/download/rawline-1.2/Rawline-1.2-windows-arm64.zip' -OutFile $zip
             $phase = 'release_integrity'
-            if ((Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'aff9074699d92553d46762b169bf7b7e72f624922dbdbf22a93387684b3ad275') { throw 'release_mismatch' }
+            if ((Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant() -ne '421715c597c276db30acb22cfd0e9942b765467d08a3c5072362d3473aac49cc') { throw 'release_mismatch' }
             $phase = 'extract'
             Expand-Archive -LiteralPath $zip -DestinationPath $releaseRoot
             $gui = @(Get-ChildItem -LiteralPath $releaseRoot -Filter Rawline.exe -Recurse -File)
@@ -87,7 +87,7 @@ jobs:
             if ($LASTEXITCODE -ne 0 -or $actual -ne '634f7dd0600903220060e0b067c094fbd2bfa983') { throw 'source_mismatch' }
             $env:CGO_ENABLED = '0'
             $env:GOOS = 'windows'
-            $env:GOARCH = 'amd64'
+            $env:GOARCH = 'arm64'
             Push-Location (Join-Path $source 'qwdtt')
             try {
               & go build -mod=readonly -trimpath -o (Join-Path $env:RUNNER_TEMP 'root-qwdtt-windows.exe') . *>> $buildLog
@@ -95,7 +95,7 @@ jobs:
             } finally { Pop-Location }
             ('QWDTT_WINDOWS_CLIENT_PATH=' + (Join-Path $env:RUNNER_TEMP 'root-qwdtt-windows.exe')) >> $env:GITHUB_ENV
             'QWDTT_WINDOWS_CORE_ORIGIN=pinned-source-build' >> $env:GITHUB_ENV
-            Write-Output 'Pinned Rawline rawline-1.2 qWDTT Windows amd64 build passed.'
+            Write-Output 'Pinned Rawline rawline-1.2 qWDTT Windows ARM64 build passed.'
           } catch {
             Write-Output 'Pinned Rawline build failed; raw diagnostics withheld.'
             exit 1

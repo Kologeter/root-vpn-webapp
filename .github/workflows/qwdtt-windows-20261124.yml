@@ -1,0 +1,132 @@
+name: ROOT qWDTT native Windows transport 20261124
+
+on:
+  push:
+    branches: [codex/qwdtt-windows-20261124]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: root-qwdtt-windows-20261124
+  cancel-in-progress: false
+
+jobs:
+  native-windows:
+    runs-on: windows-2025
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - name: Set up Go 1.27.4
+        uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version: '1.27.4'
+          cache: false
+
+      - name: Verify official Windows release and native import self-test
+        id: official-import
+        continue-on-error: true
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $false
+          $ProgressPreference = 'SilentlyContinue'
+          $releaseRoot = Join-Path $env:RUNNER_TEMP 'root-qwdtt-official-release'
+          $zip = Join-Path $env:RUNNER_TEMP 'Rawline-1.2-windows64.zip'
+          $output = Join-Path $env:RUNNER_TEMP 'root-qwdtt-import.stdout.private'
+          $errorLog = Join-Path $env:RUNNER_TEMP 'root-qwdtt-import.stderr.private'
+          $process = $null
+          $importPassed = $false
+          $phase = 'download'
+          try {
+            Invoke-WebRequest -Uri 'https://github.com/ttrroyy/Rawline/releases/download/rawline-1.2/Rawline-1.2-windows64.zip' -OutFile $zip
+            $phase = 'release_integrity'
+            if ((Get-FileHash -LiteralPath $zip -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'aff9074699d92553d46762b169bf7b7e72f624922dbdbf22a93387684b3ad275') { throw 'release_mismatch' }
+            $phase = 'extract'
+            Expand-Archive -LiteralPath $zip -DestinationPath $releaseRoot
+            $gui = @(Get-ChildItem -LiteralPath $releaseRoot -Filter Rawline.exe -Recurse -File)
+            $core = @(Get-ChildItem -LiteralPath $releaseRoot -Filter qwdtt.exe -Recurse -File)
+            if ($core.Count -eq 1) {
+              ('QWDTT_WINDOWS_CLIENT_PATH=' + $core[0].FullName) >> $env:GITHUB_ENV
+              'QWDTT_WINDOWS_CORE_ORIGIN=official-release' >> $env:GITHUB_ENV
+            }
+            if ($gui.Count -ne 1) { throw 'gui_missing' }
+            $phase = 'native_import'
+            $env:QT_QPA_PLATFORM = 'offscreen'
+            $process = Start-Process -FilePath $gui[0].FullName -WorkingDirectory $gui[0].DirectoryName -ArgumentList '--self-test-qwdtt-import' -RedirectStandardOutput $output -RedirectStandardError $errorLog -PassThru
+            if (-not $process.WaitForExit(120000)) { throw 'import_timeout' }
+            $importPassed = $process.ExitCode -eq 0
+            if (-not $importPassed) { throw 'import_failed' }
+          } catch {
+            Write-Output ('ROOT_QWDTT_WINDOWS_IMPORT_REPORT={"schema":1,"passed":false,"error":"' + $phase + '_failed"}')
+          } finally {
+            if ($null -ne $process) {
+              try { if (-not $process.HasExited) { & "$env:SystemRoot\System32\taskkill.exe" /PID $process.Id /T /F *> $null } } catch { }
+              try { $process.Dispose() } catch { }
+            }
+            Remove-Item Env:\QT_QPA_PLATFORM -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath $zip,$output,$errorLog -Force -ErrorAction SilentlyContinue
+          }
+          if ($importPassed) {
+            Write-Output 'ROOT_QWDTT_WINDOWS_IMPORT_REPORT={"schema":1,"passed":true,"official_release":true,"synthetic_only":true}'
+          } else { exit 1 }
+
+      - name: Build pinned Rawline qWDTT Windows core
+        if: env.QWDTT_WINDOWS_CLIENT_PATH == ''
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $PSNativeCommandUseErrorActionPreference = $false
+          $ProgressPreference = 'SilentlyContinue'
+          $source = Join-Path $env:RUNNER_TEMP 'root-qwdtt-rawline-source'
+          $buildLog = Join-Path $env:RUNNER_TEMP 'root-qwdtt-build.private.log'
+          try {
+            & git clone --quiet --depth 1 --branch rawline-1.2 https://github.com/ttrroyy/Rawline.git $source *> $buildLog
+            if ($LASTEXITCODE -ne 0) { throw 'clone_failed' }
+            $actual = (& git -C $source rev-parse HEAD 2>> $buildLog).Trim()
+            if ($LASTEXITCODE -ne 0 -or $actual -ne '634f7dd0600903220060e0b067c094fbd2bfa983') { throw 'source_mismatch' }
+            $env:CGO_ENABLED = '0'
+            $env:GOOS = 'windows'
+            $env:GOARCH = 'amd64'
+            Push-Location (Join-Path $source 'qwdtt')
+            try {
+              & go build -mod=readonly -trimpath -o (Join-Path $env:RUNNER_TEMP 'root-qwdtt-windows.exe') . *>> $buildLog
+              if ($LASTEXITCODE -ne 0) { throw 'build_failed' }
+            } finally { Pop-Location }
+            ('QWDTT_WINDOWS_CLIENT_PATH=' + (Join-Path $env:RUNNER_TEMP 'root-qwdtt-windows.exe')) >> $env:GITHUB_ENV
+            'QWDTT_WINDOWS_CORE_ORIGIN=pinned-source-build' >> $env:GITHUB_ENV
+            Write-Output 'Pinned Rawline rawline-1.2 qWDTT Windows amd64 build passed.'
+          } catch {
+            Write-Output 'Pinned Rawline build failed; raw diagnostics withheld.'
+            exit 1
+          } finally {
+            Remove-Item -LiteralPath $buildLog -Force -ErrorAction SilentlyContinue
+          }
+
+      - name: Probe fresh per-node WG over TURN TCP
+        id: native-probe
+        env:
+          QWDTT_WINDOWS_PROFILES_20261124: ${{ secrets.QWDTT_WINDOWS_PROFILES_20261124 }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $ProgressPreference = 'SilentlyContinue'
+          $probe = Join-Path $env:RUNNER_TEMP 'root-qwdtt-windows-probe.ps1'
+          try {
+            $url = 'https://raw.githubusercontent.com/${{ github.repository }}/${{ github.sha }}/.github/scripts/qwdtt-windows-probe.ps1'
+            Invoke-WebRequest -Uri $url -OutFile $probe
+            $actualHash = (Get-FileHash -LiteralPath $probe -Algorithm SHA256).Hash.ToLowerInvariant()
+            if ($actualHash -ne '0cf363b9991c6cce033fd0d73e975f8c18f9f331247ad9384cdce4b474d2d6a5') { throw 'probe_integrity_failed' }
+          } catch {
+            [System.Environment]::SetEnvironmentVariable('QWDTT_WINDOWS_PROFILES_20261124', $null)
+            Write-Output 'ROOT_QWDTT_WINDOWS_REPORT={"schema":1,"passed":false,"error":"probe_download_or_integrity_failed"}'
+            exit 1
+          }
+          & $probe -ClientPath $env:QWDTT_WINDOWS_CLIENT_PATH
+
+      - name: Require both native import and transport checks
+        if: always()
+        run: |
+          if ('${{ steps.official-import.outcome }}' -ne 'success' -or '${{ steps.native-probe.outcome }}' -ne 'success') {
+            Write-Output 'Windows verification incomplete or failed; inspect only the redacted report lines.'
+            exit 1
+          }
